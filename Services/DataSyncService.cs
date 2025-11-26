@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 namespace Horizon.Services;
 
 public class DataSyncService : IHostedService, IDataSyncService, IDisposable
+namespace Horizon.Services;
+
+public class DataSyncService : IHostedService, IDisposable
 {
     private readonly ILogger<DataSyncService> _logger;
     private readonly string _sourcePath;
@@ -34,6 +37,20 @@ public class DataSyncService : IHostedService, IDataSyncService, IDisposable
             .Select(Path.GetFileName)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList() ?? new List<string>();
+
+    private Timer? _timer;
+
+    private static readonly TimeSpan SyncTime = new(17, 0, 0); // 17:00 every day
+
+    public DataSyncService(IConfiguration configuration, IWebHostEnvironment environment, ILogger<DataSyncService> logger)
+    {
+        _logger = logger;
+
+        _sourcePath = configuration.GetValue<string>("DataPath")
+            ?? Path.Combine(environment.ContentRootPath, "Data");
+
+        _targetPath = configuration.GetValue<string>("PublishDataPath")
+            ?? Path.Combine(environment.ContentRootPath, "Data");
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -43,6 +60,11 @@ public class DataSyncService : IHostedService, IDataSyncService, IDisposable
 
         _ = TriggerSyncInternalAsync("startup", cancellationToken);
         StartTimer();
+
+        _logger.LogInformation("DataSyncService starting. Source: {Source}, Target: {Target}", _sourcePath, _targetPath);
+
+        _ = CopyDataAsync(cancellationToken);
+        ScheduleNextRun();
 
         return Task.CompletedTask;
     }
@@ -101,6 +123,38 @@ public class DataSyncService : IHostedService, IDataSyncService, IDisposable
         finally
         {
             _syncLock.Release();
+
+    private void ScheduleNextRun()
+    {
+        var now = DateTime.Now;
+        var nextRun = now.Date + SyncTime;
+
+        if (now >= nextRun)
+        {
+            nextRun = nextRun.AddDays(1);
+        }
+
+        var delay = nextRun - now;
+
+        _logger.LogInformation("Next data sync scheduled for {NextRun} (in {Delay}).", nextRun, delay);
+
+        _timer?.Dispose();
+        _timer = new Timer(async _ => await RunSyncAsync(), null, delay, Timeout.InfiniteTimeSpan);
+    }
+
+    private async Task RunSyncAsync()
+    {
+        try
+        {
+            await CopyDataAsync(CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Data sync failed.");
+        }
+        finally
+        {
+            ScheduleNextRun();
         }
     }
 
@@ -121,6 +175,8 @@ public class DataSyncService : IHostedService, IDataSyncService, IDisposable
             _logger.LogWarning("No Excel files found to copy from {SourcePath}.", _sourcePath);
             return;
         }
+
+        var files = Directory.GetFiles(_sourcePath, "*.xlsx", SearchOption.TopDirectoryOnly);
 
         foreach (var file in files)
         {
