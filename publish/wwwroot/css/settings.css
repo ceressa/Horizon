@@ -1,0 +1,276 @@
+/* ========== SETTINGS PAGE - COMPLETE CLEAN VERSION ========== */
+
+/* Settings Container */
+.settings-container {
+    display: grid;
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Settings Section */
+.settings-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s ease;
+}
+
+.settings-section:hover {
+    border-color: rgba(132, 204, 22, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Section Header */
+.section-header-small {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header-small i {
+    font-size: 1.5rem;
+    color: #84cc16;
+}
+
+.section-header-small h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+/* Setting Item */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 24px;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 4px 0;
+}
+
+.setting-info p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Setting Button */
+.setting-btn {
+    padding: 10px 20px;
+    background: rgba(132, 204, 22, 0.15);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+    border-radius: 8px;
+    color: #84cc16;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.setting-btn:hover {
+    background: rgba(132, 204, 22, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(132, 204, 22, 0.2);
+}
+
+.setting-btn:active {
+    transform: translateY(0);
+}
+
+/* Setting Select */
+.setting-select {
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    min-width: 180px;
+    transition: all 0.3s ease;
+}
+
+.setting-select:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(132, 204, 22, 0.3);
+}
+
+.setting-select:focus {
+    outline: none;
+    border-color: rgba(132, 204, 22, 0.5);
+    box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.1);
+}
+
+.setting-select option {
+    background: #1e293b;
+    color: white;
+    padding: 8px;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+    border-radius: 28px;
+}
+
+.toggle-slider:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+    background: linear-gradient(135deg, #84cc16, #65a30d);
+    border-color: #84cc16;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+}
+
+input:focus + .toggle-slider {
+    box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.2);
+}
+
+/* Danger Zone */
+.danger-zone {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.danger-zone:hover {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.danger-zone .section-header-small i {
+    color: #ef4444;
+}
+
+.danger-zone .setting-btn {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.danger-zone .setting-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .settings-container {
+        padding: 0 1rem;
+    }
+
+    .settings-section {
+        padding: 24px 20px;
+    }
+
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .setting-btn,
+    .setting-select {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header-small h2 {
+        font-size: 1.25rem;
+    }
+
+    .setting-info h3 {
+        font-size: 0.9375rem;
+    }
+
+    .setting-info p {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Save Status Notification */
+.save-status {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideInRight 0.3s ease;
+}
+
+.save-status i {
+    font-size: 1.25rem;
+}

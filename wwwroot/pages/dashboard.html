@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>HORIZON</title>
+
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body data-theme="dark">
+    <header class="header">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Overview</span>
+            </a>
+            <div class="logo-section">
+                <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" />
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title" id="kpiTitle">Loading...</h1>
+            <p class="page-subtitle" id="kpiSubtitle">Detailed KPI data is being loaded...</p>
+        </div>
+
+        <!-- KPI Chart -->
+        <div class="kpi-details-container">
+            <canvas id="kpiChart"></canvas>
+        </div>
+
+        <!-- KPI Table -->
+        <div class="kpi-table-container">
+            <table class="kpi-table" id="kpiTable">
+                <thead>
+                    <tr>
+                        <th>Region</th>
+                        <th>Value</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS ile doldurulacak -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

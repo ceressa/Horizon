@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON Country Details</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/country-detail.css">
+    <link rel="stylesheet" href="../css/components.css">
+    
+    <!-- External Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+</head>
+
+<body data-theme="dark">
+    <!-- Header Navigation -->
+        <!-- ============================================================
+     HEADER NAVIGATION
+     ============================================================ -->
+<header class="header">
+    <nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs-container">
+            <div class="nav-tabs">
+                <!-- Overview -->
+                <a href="../index.html" class="nav-tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-tab-text">Overview</span>
+                </a>
+                
+                <!-- Organization Dropdown -->
+                <div class="hz-dropdown" data-dropdown="organization">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-tab-text">Organization</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="team.html" class="hz-dropdown-link">
+                            <i class="fas fa-user-group"></i>
+                            <span>Teams</span>
+                        </a>
+                        <a href="locations.html" class="hz-dropdown-link">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Infrastructure Dropdown -->
+                <div class="hz-dropdown active" data-dropdown="infrastructure">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-server"></i>
+                        <span class="nav-tab-text">Infrastructure</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="assets.html" class="hz-dropdown-link active">
+                            <i class="fas fa-database"></i>
+                            <span>Assets</span>
+                        </a>
+                        <a href="#" class="hz-dropdown-link">
+                            <i class="fas fa-cubes"></i>
+                            <span>Apps</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Financials Dropdown -->
+                <div class="hz-dropdown" data-dropdown="financials">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-tab-text">Financials</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="projects.html" class="hz-dropdown-link">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="financial.html" class="hz-dropdown-link">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Contracts</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <a href="settings.html" class="nav-tab">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-tab-text">Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Header Right Side -->
+        <div class="header-right">
+            <!-- Live Clock with Timezone -->
+            <div class="live-clock" id="liveClockContainer">
+                <div class="clock-time" id="liveClock">--:--:--</div>
+                <div class="clock-date" id="liveDate">Loading...</div>
+                <div class="clock-timezone" id="clockTimezone">
+                    <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                    <span id="timezoneCode">TR</span>
+                </div>
+            </div>
+
+            <!-- Timezone Dropdown -->
+            <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+                <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+                    <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+                    <span>Istanbul (Türkiye)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+                    <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+                    <span>Central Europe</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+                    <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+                    <span>London (UK)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+                    <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+                    <span>Chicago (USA)</span>
+                </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+        </div>
+    </nav>
+</header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="country-detail-container">
+            
+            <!-- Country Header -->
+            <header class="country-header">
+                <div class="country-header-top">
+                    <a href="../index.html" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Dashboard</span>
+                    </a>
+                    
+
+                </div>
+                
+                <div class="country-header-content">
+                    <div class="country-flag-large" id="countryFlag">🏳️</div>
+                    <h1 class="country-title" id="countryName">Loading...</h1>
+                </div>
+            </header>
+
+            <!-- Statistics Overview -->
+            <section class="statistics-section">
+                <h2 class="section-title">Operations Overview</h2>
+                <div class="country-stats-grid">
+                    <div class="country-detailed-stat" onclick="showStatDetail('users')">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value-large" id="countryUsers">0</div>
+                            <div class="stat-label-large">End Users</div>
+                        </div>
+                    </div>
+
+                    <div class="country-detailed-stat" onclick="showStatDetail('devices')">
+                        <div class="stat-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value-large" id="countryDevices">0</div>
+                            <div class="stat-label-large">Devices</div>
+                        </div>
+                    </div>
+
+                    <div class="country-detailed-stat" onclick="showStatDetail('locations')">
+                        <div class="stat-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value-large" id="countryLocations">0</div>
+                            <div class="stat-label-large">Locations</div>
+                        </div>
+                    </div>
+
+                    <div class="country-detailed-stat" onclick="showStatDetail('network')">
+                        <div class="stat-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value-large" id="countryNetworkDevices">0</div>
+                            <div class="stat-label-large">Network Devices</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+			
+			<section class="special-actions-section" id="specialActionsSection" style="display: none;">
+    <button class="ist-flights-button" onclick="openISTFlights()">
+        <div class="button-icon">
+            <i class="fas fa-plane-departure"></i>
+        </div>
+        <div class="button-content">
+            <div class="button-title">Istanbul Airport Operations</div>
+            <div class="button-subtitle">View real-time flight data and hub status</div>
+        </div>
+        <div class="button-arrow">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+    </button>
+</section>
+			
+            <!-- Network Infrastructure -->
+            <section class="network-section">
+                <div class="network-topology-country">
+                    <h2 class="topology-title">Network Infrastructure</h2>
+                    <div class="topology-grid">
+                        <div class="topology-item" onclick="showNetworkDetail('routers')">
+                            <div class="topology-item-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="topology-item-count" id="countryRouters">0</div>
+                            <div class="topology-item-label">Routers</div>
+                        </div>
+
+                        <div class="topology-item" onclick="showNetworkDetail('switches')">
+                            <div class="topology-item-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <div class="topology-item-count" id="countrySwitches">0</div>
+                            <div class="topology-item-label">Switches</div>
+                        </div>
+
+                        <div class="topology-item" onclick="showNetworkDetail('aps')">
+                            <div class="topology-item-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="topology-item-count" id="countryAPs">0</div>
+                            <div class="topology-item-label">Access Points</div>
+                        </div>
+
+                        <div class="topology-item" onclick="showNetworkDetail('firewalls')">
+                            <div class="topology-item-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="topology-item-count" id="countryFirewalls">0</div>
+                            <div class="topology-item-label">Firewalls</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Geographic Map -->
+            <section class="map-section">
+                <div class="map-container">
+                    <div class="map-header">
+                        <h2 class="map-title">Geographic Distribution</h2>
+                        <p class="map-subtitle">Interactive map showing all operational locations</p>
+                    </div>
+                    <div id="countryMap" class="map-loading">
+                        <div class="loading-content">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading map...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Locations Directory -->
+            <section class="locations-section">
+                <h2 class="section-title">Location Directory</h2>
+                <div class="locations-list" id="locationsList">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading locations...</p>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+	
+	<!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="../images/1.png" alt="Türkiye IT Team" class="team-modal-photo">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+	
+	<!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+<!-- JavaScript Files - DOĞRU SIRA -->
+<script src="../js/logs.js"></script>
+<script src="../js/auth-service.js"></script>  <!-- ✅ EKLE -->
+<script src="../js/auth-guard.js"></script>    <!-- ✅ EKLE -->
+<script src="../js/countries.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/dashboard.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/country-detail.js"></script>
+
+
+    <script>
+        // Event Handlers
+        function showStatDetail(type) {
+            console.log(`Opening ${type} details`);
+            showNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} management coming soon`, 'info');
+        }
+
+        function showNetworkDetail(deviceType) {
+            console.log(`Opening ${deviceType} management`);
+            showNotification(`${deviceType.charAt(0).toUpperCase() + deviceType.slice(1)} details coming soon`, 'info');
+        }
+
+        // Page Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Country Detail Page loaded');
+            
+            // Global error handling
+            window.addEventListener('error', function(e) {
+                console.error('Page error:', e.error);
+                showNotification('An error occurred while loading the page', 'error');
+            });
+            
+            // Initialize page
+            try {
+                initializeCountryDetailPage();
+            } catch (error) {
+                console.error('Initialization failed:', error);
+                showNotification('Failed to initialize country details', 'error');
+            }
+        });
+    </script>
+
+    <!-- CSS Overrides for cleaner look -->
+    <style>
+        /* Refresh Button Styles */
+        .country-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .refresh-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(132, 204, 22, 0.1);
+            border: 1px solid rgba(132, 204, 22, 0.3);
+            border-radius: 8px;
+            color: #84cc16;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-button:hover {
+            background: rgba(132, 204, 22, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .refresh-button i {
+            font-size: 12px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Loading States */
+        .map-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 350px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .loading-content i {
+            font-size: 24px;
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .loading-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Stat Cards Enhanced */
+        .stat-content {
+            flex: 1;
+        }
+
+        .country-detailed-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .country-header-top {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+
+            .refresh-button {
+                justify-content: center;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,242 @@
+{
+  "projects": [],
+  "projectTemplate": {
+    "id": "",
+    "name": "",
+    "description": "",
+    "country": "",
+    "status": "",
+    "priority": "",
+    "progress": 0,
+    "startDate": "",
+    "endDate": "",
+    "estimatedEndDate": "",
+    "budget": {
+      "amount": 0,
+      "currency": "EUR",
+      "spentAmount": 0,
+      "remainingAmount": 0
+    },
+    "category": "",
+    "tags": [],
+    "assignedTo": "",
+    "projectLead": "",
+    "team": [],
+    "stakeholders": [],
+    "tasks": [],
+    "notes": "",
+    "attachments": [],
+    "risks": [],
+    "milestones": [],
+    "createdDate": "",
+    "lastUpdated": "",
+    "createdBy": ""
+  },
+  "systemSettings": {
+    "defaultCurrency": "EUR",
+    "supportedCurrencies": [
+      {
+        "code": "EUR",
+        "symbol": "€",
+        "name": "Euro"
+      },
+      {
+        "code": "USD", 
+        "symbol": "$",
+        "name": "US Dollar"
+      },
+      {
+        "code": "TRY",
+        "symbol": "₺", 
+        "name": "Turkish Lira"
+      }
+    ],
+    "dateFormat": "YYYY-MM-DD",
+    "numberFormat": "en-US"
+  },
+  "projectCategories": [
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure",
+      "color": "#3b82f6",
+      "icon": "fas fa-server"
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "color": "#ef4444", 
+      "icon": "fas fa-shield-alt"
+    },
+    {
+      "id": "software",
+      "name": "Software",
+      "color": "#10b981",
+      "icon": "fas fa-code"
+    },
+    {
+      "id": "hardware",
+      "name": "Hardware", 
+      "color": "#f59e0b",
+      "icon": "fas fa-microchip"
+    },
+    {
+      "id": "compliance",
+      "name": "Compliance",
+      "color": "#8b5cf6",
+      "icon": "fas fa-clipboard-check"
+    },
+    {
+      "id": "training",
+      "name": "Training",
+      "color": "#06b6d4",
+      "icon": "fas fa-graduation-cap"
+    },
+    {
+      "id": "process",
+      "name": "Process Improvement",
+      "color": "#84cc16",
+      "icon": "fas fa-cogs"
+    }
+  ],
+  "projectStatuses": [
+    {
+      "value": "planning",
+      "label": "Planning",
+      "color": "#6366f1",
+      "bgColor": "rgba(99, 102, 241, 0.1)",
+      "description": "Project is in planning phase"
+    },
+    {
+      "value": "active",
+      "label": "Active", 
+      "color": "#10b981",
+      "bgColor": "rgba(16, 185, 129, 0.1)",
+      "description": "Project is actively being worked on"
+    },
+    {
+      "value": "maintenance",
+      "label": "Maintenance",
+      "color": "#f59e0b", 
+      "bgColor": "rgba(245, 158, 11, 0.1)",
+      "description": "Project is in maintenance mode"
+    },
+    {
+      "value": "completed",
+      "label": "Completed",
+      "color": "#22c55e",
+      "bgColor": "rgba(34, 197, 94, 0.1)", 
+      "description": "Project has been completed"
+    },
+    {
+      "value": "on-hold",
+      "label": "On Hold",
+      "color": "#ef4444",
+      "bgColor": "rgba(239, 68, 68, 0.1)",
+      "description": "Project is temporarily on hold"
+    },
+    {
+      "value": "cancelled",
+      "label": "Cancelled",
+      "color": "#6b7280",
+      "bgColor": "rgba(107, 114, 128, 0.1)",
+      "description": "Project has been cancelled"
+    }
+  ],
+  "priorityLevels": [
+    {
+      "value": "low",
+      "label": "Low",
+      "color": "#64748b",
+      "bgColor": "rgba(100, 116, 139, 0.1)",
+      "weight": 1
+    },
+    {
+      "value": "medium",
+      "label": "Medium", 
+      "color": "#3b82f6",
+      "bgColor": "rgba(59, 130, 246, 0.1)",
+      "weight": 2
+    },
+    {
+      "value": "high",
+      "label": "High",
+      "color": "#f59e0b",
+      "bgColor": "rgba(245, 158, 11, 0.1)", 
+      "weight": 3
+    },
+    {
+      "value": "critical",
+      "label": "Critical",
+      "color": "#ef4444",
+      "bgColor": "rgba(239, 68, 68, 0.1)",
+      "weight": 4
+    }
+  ],
+  "countries": [
+    {
+      "code": "TR",
+      "name": "Türkiye", 
+      "flag": "🇹🇷",
+      "currency": "TRY"
+    },
+    {
+      "code": "GR",
+      "name": "Greece",
+      "flag": "🇬🇷", 
+      "currency": "EUR"
+    },
+    {
+      "code": "BG",
+      "name": "Bulgaria",
+      "flag": "🇧🇬",
+      "currency": "EUR"
+    },
+    {
+      "code": "SI", 
+      "name": "Slovenia",
+      "flag": "🇸🇮",
+      "currency": "EUR"
+    },
+    {
+      "code": "CY",
+      "name": "Cyprus",
+      "flag": "🇨🇾",
+      "currency": "EUR"
+    }
+  ],
+  "taskTemplate": {
+    "id": "",
+    "title": "",
+    "description": "",
+    "assignedTo": "",
+    "status": "pending",
+    "priority": "medium",
+    "dueDate": "",
+    "createdDate": "",
+    "completedDate": ""
+  },
+  "riskTemplate": {
+    "id": "",
+    "description": "",
+    "impact": "medium",
+    "probability": "medium", 
+    "category": "",
+    "mitigation": "",
+    "owner": "",
+    "status": "active"
+  },
+  "milestoneTemplate": {
+    "id": "",
+    "name": "",
+    "description": "",
+    "targetDate": "",
+    "actualDate": "",
+    "status": "pending",
+    "deliverables": []
+  },
+  "metadata": {
+    "version": "2.0.0",
+    "lastUpdated": "2024-12-17",
+    "dataFormat": "horizon-projects"
+  }
+}

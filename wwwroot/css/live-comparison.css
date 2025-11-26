@@ -1,0 +1,992 @@
+/* ============================================================
+   LIVE COMPARISON PAGE - MODERN STYLES
+   ============================================================
+   Version: 2.0.0 - Enhanced Design
+   ============================================================ */
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+
+.main-content {
+    padding: 2rem;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.page-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-title i {
+    -webkit-text-fill-color: #667eea;
+    color: #667eea;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+}
+
+/* ============================================================
+   SETUP CARD
+   ============================================================ */
+
+.comparison-setup {
+    margin-bottom: 3rem;
+}
+
+.setup-card {
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.setup-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.setup-title i {
+    color: #667eea;
+}
+
+/* ============================================================
+   COUNTRY SELECTION
+   ============================================================ */
+
+.country-selection {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    align-items: start;
+}
+
+.country-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.select-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.select-label i {
+    color: #667eea;
+}
+
+/* ============================================================
+   FLAG GRID
+   ============================================================ */
+
+.flag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.flag-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.flag-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.flag-grid::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.5);
+    border-radius: 4px;
+}
+
+.flag-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.7);
+}
+
+.flag-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100px;
+}
+
+.flag-card:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.flag-card.selected {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    border-color: #667eea;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4),
+                inset 0 0 20px rgba(102, 126, 234, 0.1);
+    transform: scale(1.05);
+}
+
+.flag-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.flag-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flag-card.selected .flag-name {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ============================================================
+   FLAG GRID LOADING
+   ============================================================ */
+
+.flag-grid-loading {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    min-height: 200px;
+}
+
+.skeleton-flag {
+    height: 100px;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 10px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ============================================================
+   SELECTED COUNTRY DISPLAY
+   ============================================================ */
+
+.selected-country-display {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 80px;
+}
+
+.selected-flag {
+    font-size: 3rem;
+}
+
+.selected-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ============================================================
+   VS DIVIDER
+   ============================================================ */
+
+.vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3rem;
+}
+
+.vs-text {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffffff;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 12px 40px rgba(102, 126, 234, 0.7);
+    }
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.compare-btn {
+    flex: 1;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.compare-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+}
+
+.compare-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.compare-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    background: rgba(102, 126, 234, 0.2);
+    box-shadow: none;
+}
+
+.compare-btn.ready {
+    animation: readyPulse 1.5s infinite;
+}
+
+@keyframes readyPulse {
+    0%, 100% {
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.7);
+    }
+}
+
+.reset-btn {
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reset-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* ============================================================
+   DISCLAIMER
+   ============================================================ */
+
+.comparison-disclaimer {
+    padding: 1.25rem 1.5rem;
+    background: rgba(102, 126, 234, 0.08);
+    border-left: 4px solid #667eea;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.comparison-disclaimer i {
+    color: #667eea;
+    font-size: 1.2rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+.comparison-disclaimer p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.comparison-disclaimer strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ============================================================
+   RESULTS SECTION
+   ============================================================ */
+
+.results-section {
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   OVERVIEW SECTION
+   ============================================================ */
+
+.overview-section {
+    margin-bottom: 3rem;
+}
+
+.comparison-overview {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+.country-summary {
+    text-align: center;
+}
+
+.summary-flag {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.country-summary h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+}
+
+.summary-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.summary-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vs-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: auto 0;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+}
+
+/* ============================================================
+   WINNER CARDS SECTION
+   ============================================================ */
+
+.winner-section {
+    margin-bottom: 3rem;
+}
+
+.winner-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.winner-card,
+.comparison-card {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.winner-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.winner-card:hover,
+.comparison-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.winner-icon,
+.comparison-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.winner-title,
+.comparison-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.winner-flag {
+    font-size: 3rem;
+    margin: 1rem 0;
+}
+
+.winner-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.winner-value,
+.comparison-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.winner-detail,
+.comparison-detail {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   CATEGORY ANALYSIS SECTION
+   ============================================================ */
+
+.category-analysis-section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title i {
+    color: #667eea;
+}
+
+.donut-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-container {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    height: 450px;
+}
+
+.chart-container-full {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    height: 400px;
+    margin-bottom: 2rem;
+}
+
+/* ============================================================
+   DETAILED TABLES SECTION
+   ============================================================ */
+
+.detailed-tables-section {
+    margin-bottom: 3rem;
+}
+
+.detailed-table-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.table-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.table-title i {
+    color: #667eea;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.comparison-table thead tr {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.comparison-table th {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-header {
+    text-align: left !important;
+    width: 25%;
+}
+
+.country-header {
+    padding: 1rem !important;
+    border-radius: 8px 8px 0 0;
+}
+
+.country-flag {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.country-name {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.distribution-header {
+    width: 15%;
+}
+
+.total-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+    width: 15%;
+}
+
+.comparison-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: scale(1.01);
+}
+
+.comparison-table td {
+    padding: 1.25rem 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.category-name {
+    font-weight: 600;
+    color: #ffffff !important;
+    text-align: left !important;
+    font-size: 1rem !important;
+}
+
+.country1-value,
+.country2-value {
+    font-weight: 700;
+    font-size: 1.1rem !important;
+}
+
+.country1-bar,
+.country2-bar {
+    padding: 0.5rem 1rem !important;
+}
+
+.progress-bar-cell {
+    position: relative;
+    width: 100%;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 14px;
+    transition: width 0.6s ease;
+}
+
+.progress-text {
+    position: relative;
+    z-index: 2;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    margin-left: 0.75rem;
+}
+
+.total-value {
+    font-weight: 800;
+    color: #ffffff !important;
+    background: rgba(102, 126, 234, 0.1);
+    font-size: 1.1rem !important;
+}
+
+.comparison-table tfoot {
+    border-top: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.totals-row td {
+    padding: 1.5rem 1rem !important;
+    font-size: 1.1rem !important;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.total-label {
+    text-align: left !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.country1-total,
+.country2-total {
+    font-weight: 800 !important;
+    font-size: 1.3rem !important;
+}
+
+.country1-total-percent,
+.country2-total-percent {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.grand-total {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3)) !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    font-size: 1.4rem !important;
+}
+
+/* ============================================================
+   PREVIOUS STYLES
+   ============================================================ */
+
+/* ============================================================
+   PREVIOUS STYLES
+   ============================================================ */
+
+/* ============================================================
+   EXPORT ACTIONS
+   ============================================================ */
+
+.export-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.export-btn {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.export-btn:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+
+@media (max-width: 1200px) {
+    .country-selection {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .vs-divider {
+        padding: 0;
+    }
+    
+    .vs-text {
+        transform: rotate(90deg);
+    }
+    
+    .comparison-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .vs-icon {
+        transform: rotate(90deg);
+    }
+    
+    .donut-charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .winner-cards {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .setup-card {
+        padding: 1.5rem;
+    }
+    
+    .flag-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .page-title {
+        font-size: 1.8rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .export-actions {
+        flex-direction: column;
+    }
+    
+    .winner-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .donut-charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .comparison-table {
+        font-size: 0.8rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .country-flag {
+        font-size: 1.2rem;
+    }
+    
+    .country-name {
+        font-size: 0.85rem;
+    }
+    
+    .progress-bar-cell {
+        height: 24px;
+    }
+    
+    .progress-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

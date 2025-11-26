@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/Horizon/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON - IT Management Platform</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- Auth Scripts -->
+    <script src="js/logs.js"></script> 
+    <script src="js/auth-service.js"></script>
+    <script src="js/auth-guard.js"></script>
+</head>
+
+<body data-theme="dark" style="opacity: 0; transition: opacity 0.8s ease;">
+    
+    <!-- ========================================
+         HEADER - Navigation & User Info
+         ======================================== -->
+<header class="header">
+    <nav class="nav-container">
+
+<div class="logo-section" style="cursor:default" title="HORIZON Dashboard">
+    <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+</div>
+
+        <!-- Navigation Tabs -->
+<div class="nav-tabs-container">
+    <div class="nav-tabs">
+        <!-- Overview - ACTIVE -->
+        <a href="index.html" class="nav-tab active">
+            <i class="fas fa-chart-line"></i>
+            <span class="nav-tab-text">Overview</span>
+        </a>
+        
+        <!-- Organization Dropdown -->
+        <div class="hz-dropdown" data-dropdown="organization">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-users"></i>
+                <span class="nav-tab-text">Organization</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="pages/team.html" class="hz-dropdown-link">
+                    <i class="fas fa-user-group"></i>
+                    <span>Teams</span>
+                </a>
+                <a href="pages/locations.html" class="hz-dropdown-link">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Locations</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Infrastructure Dropdown -->
+<div class="hz-dropdown" data-dropdown="infrastructure">
+    <span class="hz-dropdown-trigger">
+        <i class="fas fa-server"></i>
+        <span class="nav-tab-text">Infrastructure</span>
+        <i class="fas fa-chevron-down hz-arrow"></i>
+    </span>
+    <div class="hz-dropdown-panel">
+        <a href="pages/assets.html" class="hz-dropdown-link">
+            <i class="fas fa-database"></i>
+            <span>Assets</span>
+        </a>
+        
+        <a href="pages/apps.html" class="hz-dropdown-link">
+            <i class="fas fa-cubes"></i>
+            <span>Apps</span>
+        </a>
+        
+        <a href="pages/stockroom.html" class="hz-dropdown-link">
+            <i class="fas fa-warehouse"></i>
+            <span>Stockroom</span>
+        </a>
+    </div>
+</div>
+        
+        <!-- Financials Dropdown -->
+        <div class="hz-dropdown" data-dropdown="financials">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-chart-pie"></i>
+                <span class="nav-tab-text">Financials</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="pages/projects.html" class="hz-dropdown-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="pages/contracts.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Contracts</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Reports Dropdown - NEW -->
+        <div class="hz-dropdown" data-dropdown="reports">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-file-chart-line"></i>
+                <span class="nav-tab-text">Reports</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="pages/live-comparison.html" class="hz-dropdown-link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Live Comparison</span>
+                </a>
+                <a href="pages/executive-dashboard.html" class="hz-dropdown-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Executive Summary</span>
+                </a>
+                <a href="pages/asset-reports.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Asset Reports</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Header Right Side -->
+        <!-- Header Right Side -->
+<div class="header-right">
+
+
+    <!-- Live Clock with Timezone -->
+    <div class="live-clock" id="liveClockContainer" onclick="toggleTimezoneDropdown(event)">
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="clock-date" id="liveDate">Loading...</div>
+        <div class="clock-timezone" id="clockTimezone">
+            <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+            <span id="timezoneCode">TR</span>
+        </div>
+    </div>
+
+    <!-- Timezone Dropdown -->
+    <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+        <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+            <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+            <span>Istanbul (Türkiye)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+            <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+            <span>Central Europe</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+            <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+            <span>London (UK)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+            <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+            <span>Chicago (USA)</span>
+        </div>
+    </div>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="pages/profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="pages/settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+    </nav>
+</header>
+
+<!-- ========================================
+     UNIVERSAL PAGE LOADER (HORIZON THEME)
+     ======================================== -->
+<div id="universalPageLoader" class="universal-page-loader">
+    <div class="loader-content">
+        <div class="loader-logo-container">
+            <div class="loader-ring"></div>
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" 
+                 alt="HORIZON" 
+                 class="loader-logo">
+        </div>
+        
+        <p class="loader-text">Loading...</p>
+        
+        <div class="loader-progress">
+            <div class="loader-progress-fill"></div>
+        </div>
+        <div class="loader-progress-text">0%</div>
+    </div>
+</div>
+
+    <!-- ========================================
+         MAIN CONTENT - Dashboard
+         ======================================== -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Executive Dashboard</h1>
+            <p class="page-subtitle">Real-time insights and operational metrics across all regions</p>
+        </div>
+
+        <!-- Dashboard Metrics Grid -->
+        <div class="dashboard-grid" id="dashboardGrid">
+            <!-- Metrics will be dynamically populated by dashboard.js -->
+        </div>
+
+        <!-- Countries Grid -->
+        <div class="countries-grid" id="countriesGrid">
+            <!-- Country cards will be dynamically populated by dashboard.js -->
+        </div>
+    </main>
+
+    <!-- ========================================
+         FOOTER
+         ======================================== -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by 
+                <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================
+         MODALS
+         ======================================== -->
+    
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+        <div class="logout-modal-content">
+            <div class="logout-modal-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-btn-cancel" id="cancelLogout">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="logout-btn-confirm" id="confirmLogout">
+                    <i class="fas fa-check"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="images/1.png" alt="Türkiye IT Team" class="team-modal-photo" style="max-width: 100%; border-radius: 12px; margin: 20px 0;">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+
+    <!-- Coffee Counter (Easter Egg) -->
+    <div class="floating-coffee-counter" title="Click to track your daily coffee! (Long press to reset)">
+        <span class="coffee-icon">☕</span>
+        <span class="coffee-count" id="coffeeCount">0</span>
+    </div>
+	
+	<button class="floating-search-btn" onclick="openCommandPalette()" title="Search (Ctrl+K)">
+    <i class="fas fa-search"></i>
+    <span class="floating-search-hint">Ctrl+K</span>
+</button>
+	
+	<div class="command-palette-overlay" id="commandPaletteOverlay">
+    <div class="command-palette">
+        <div class="command-palette-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="commandPaletteInput" placeholder="Search everything... (Ctrl+K)">
+            <kbd class="command-palette-hint">ESC</kbd>
+        </div>
+        <div class="command-palette-results" id="commandPaletteResults">
+            <div class="command-palette-empty">
+                <i class="fas fa-search"></i>
+                <p>Type to search assets, users, team members...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- ========================================
+         SCRIPTS
+         ======================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/countries.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/common.js"></script>
+	<script src="js/global-search.js"></script>
+    <script src="js/dashboard.js"></script>
+
+    <!-- Main Initialization Script -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Initializing HORIZON Dashboard...');
+
+    const loader = document.getElementById('universalPageLoader');
+    const body = document.body;
+
+    // Başlangıçta loader'ı aktif et, sayfayı gizle
+    if (typeof showPageLoader === 'function') {
+    showPageLoader('default');
+}
+    body.style.opacity = '0';
+
+    try {
+        // ========================================
+        // 1. AUTHENTICATION CHECK
+        // ========================================
+        if (!window.authService || !window.authService.isAuthenticated()) {
+            console.warn('❌ Token invalid, redirecting to login');
+            window.location.href = `${window.location.origin}/Horizon/pages/login.html`;
+            return;
+        }
+
+        window.currentUser = window.authService.getCurrentUser();
+        console.log('👤 Logged in as:', window.currentUser?.name);
+
+        // ========================================
+        // 2. CLOCK CLICK EVENT LISTENER
+        // ========================================
+        const clockContainer = document.getElementById('liveClockContainer');
+        if (clockContainer) {
+            clockContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = document.getElementById('timezoneDropdown');
+                if (dropdown) {
+                    const isVisible = dropdown.style.display === 'block';
+                    dropdown.style.display = isVisible ? 'none' : 'block';
+                }
+            });
+            console.log('✅ Clock click listener added');
+        }
+
+        // ========================================
+        // 3. LOGOUT MODAL EVENT LISTENERS
+        // ========================================
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+
+        if (logoutBtn && logoutModal) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logoutModal.classList.add('active');
+                console.log('🔐 Logout modal opened');
+            });
+
+            if (cancelLogout) {
+                cancelLogout.addEventListener('click', () => {
+                    logoutModal.classList.remove('active');
+                    console.log('❌ Logout cancelled');
+                });
+            }
+
+            if (confirmLogout) {
+                confirmLogout.addEventListener('click', () => {
+                    console.log('✅ Logout confirmed');
+                    if (window.authService) {
+                        window.authService.logout();
+                    } else {
+                        window.location.href = '/Horizon/pages/login.html';
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && logoutModal.classList.contains('active')) {
+                    logoutModal.classList.remove('active');
+                }
+            });
+
+            logoutModal.addEventListener('click', (e) => {
+                if (e.target === logoutModal) {
+                    logoutModal.classList.remove('active');
+                }
+            });
+
+            console.log('✅ Logout modal listeners added');
+        }
+
+        // ========================================
+        // 4. LOAD DASHBOARD DATA
+        // ========================================
+        console.log('📊 Loading dashboard data...');
+        await initializeDashboard();
+
+        // ========================================
+        // 5. INITIALIZE TWEMOJI
+        // ========================================
+        if (typeof twemoji !== 'undefined') {
+            twemoji.parse(document.body, { 
+                folder: 'svg', 
+                ext: '.svg' 
+            });
+            console.log('✅ Twemoji initialized');
+        }
+
+        // ========================================
+        // 6. FADE IN PAGE + HIDE LOADER
+        // ========================================
+        setTimeout(() => {
+            // Loader fade-out animasyonu
+            if (loader) {
+                loader.classList.remove('active');
+                loader.classList.add('fade-out');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 600);
+            }
+
+            // Sayfa görünür hale gelsin
+            body.style.transition = 'opacity 0.8s ease';
+            body.style.opacity = '1';
+        }, 800);
+
+        console.log('✅ Dashboard fully initialized');
+
+    } catch (err) {
+        console.error('💥 Dashboard initialization failed:', err);
+        body.style.opacity = '1';
+        if (loader) loader.style.display = 'none';
+    }
+
+    // ========================================
+    // 7. CLOSE TIMEZONE DROPDOWN ON OUTSIDE CLICK
+    // ========================================
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('timezoneDropdown');
+        const clock = document.getElementById('liveClockContainer');
+        if (dropdown && clock && 
+            !clock.contains(e.target) && 
+            !dropdown.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    // ========================================
+    // 8. START LIVE CLOCK
+    // ========================================
+    if (typeof updateLiveClock === 'function') {
+        updateLiveClock();
+        setInterval(updateLiveClock, 60000);
+        console.log('⏰ Live clock started');
+    }
+});
+</script>
+
+
+
+</body>
+</html>

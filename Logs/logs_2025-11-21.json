@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2025-11-21T12:27:49.166Z",
+    "level": "AUTH",
+    "event": "LOGOUT",
+    "user": "Ufuk Celikeloglu",
+    "success": true,
+    "message": "User Ufuk Celikeloglu logged out",
+    "data": null,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "browserLanguage": "en",
+    "platform": "Win32",
+    "screenResolution": "1920x1080",
+    "timezone": "Europe/Istanbul",
+    "referrer": "https://tr.eu.fedex.com/Horizon/pages/stockroom.html",
+    "pageUrl": "/Horizon/pages/login.html",
+    "sessionId": "sess_1763625805545_i6j66tnc0",
+    "sessionDuration": 102253,
+    "ipAddress": "10.34.230.60",
+    "serverTimestamp": "2025-11-21T12:27:34Z"
+  },
+  {
+    "timestamp": "2025-11-21T12:27:54.939Z",
+    "level": "AUTH",
+    "event": "LOGIN_SUCCESS",
+    "user": "3723002",
+    "success": true,
+    "message": "User 3723002 logged in successfully",
+    "data": null,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "browserLanguage": "en",
+    "platform": "Win32",
+    "screenResolution": "1920x1080",
+    "timezone": "Europe/Istanbul",
+    "referrer": "https://tr.eu.fedex.com/Horizon/pages/login.html",
+    "pageUrl": "/Horizon/pages/login.html",
+    "sessionId": "sess_1763728074939_usqugd398",
+    "sessionDuration": null,
+    "ipAddress": "10.34.230.60",
+    "serverTimestamp": "2025-11-21T12:27:39Z"
+  }
+]

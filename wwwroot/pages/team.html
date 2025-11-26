@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON - Team Management</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/team.css">
+    <link rel="stylesheet" href="../css/components.css">
+    
+    <!-- Twemoji -->
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+</head>
+<body data-theme="dark">
+        <!-- ============================================================
+     HEADER NAVIGATION
+     ============================================================ -->
+<header class="header">
+    <nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs-container">
+            <div class="nav-tabs">
+                <!-- Overview -->
+                <a href="../index.html" class="nav-tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-tab-text">Overview</span>
+                </a>
+                
+                <!-- Organization Dropdown -->
+                <div class="hz-dropdown active" data-dropdown="organization">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-tab-text">Organization</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="team.html" class="hz-dropdown-link active">
+                            <i class="fas fa-user-group"></i>
+                            <span>Teams</span>
+                        </a>
+                        <a href="locations.html" class="hz-dropdown-link">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Infrastructure Dropdown -->
+                <div class="hz-dropdown" data-dropdown="infrastructure">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-server"></i>
+                        <span class="nav-tab-text">Infrastructure</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="assets.html" class="hz-dropdown-link">
+                            <i class="fas fa-database"></i>
+                            <span>Assets</span>
+                        </a>
+                        <a href="#" class="hz-dropdown-link">
+                            <i class="fas fa-cubes"></i>
+                            <span>Apps</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Financials Dropdown -->
+                <div class="hz-dropdown" data-dropdown="financials">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-tab-text">Financials</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="projects.html" class="hz-dropdown-link">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="financial.html" class="hz-dropdown-link">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Contracts</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <a href="settings.html" class="nav-tab">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-tab-text">Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Header Right Side -->
+        <div class="header-right">
+            <!-- Live Clock with Timezone -->
+            <div class="live-clock" id="liveClockContainer">
+                <div class="clock-time" id="liveClock">--:--:--</div>
+                <div class="clock-date" id="liveDate">Loading...</div>
+                <div class="clock-timezone" id="clockTimezone">
+                    <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                    <span id="timezoneCode">TR</span>
+                </div>
+            </div>
+
+            <!-- Timezone Dropdown -->
+            <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+                <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+                    <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+                    <span>Istanbul (Türkiye)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+                    <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+                    <span>Central Europe</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+                    <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+                    <span>London (UK)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+                    <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+                    <span>Chicago (USA)</span>
+                </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="pages/profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="pages/settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+        </div>
+    </nav>
+</header>
+
+    <main class="main-content">
+        <!-- Access Denied Message (Hidden by default) -->
+        <div id="accessDenied" class="access-denied-container" style="display: none;">
+            <div class="access-denied-card glass-morphism">
+                <div class="access-denied-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2>Access Restricted</h2>
+                <p>You don't have permission to view team information.</p>
+                <p class="access-hint">Please contact your administrator to request access.</p>
+            </div>
+        </div>
+
+        <!-- Main Content (Hidden by default until access check) -->
+        <div id="mainContent" style="display: none;">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h1 class="section-title animated-gradient">Team Management</h1>
+            </div>
+
+          
+
+            <!-- Filters & Search -->
+            <div class="team-controls glass-morphism">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="teamSearch" placeholder="Search by name, email, location...">
+                </div>
+                                
+                <button class="btn btn-secondary" onclick="clearTeamFilters()">
+                    <i class="fas fa-filter-circle-xmark"></i> Clear Filters
+                </button>
+                
+                <button class="btn btn-primary" onclick="exportTeamData()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+
+            <!-- Team Content -->
+            <div id="teamContent" class="team-members-grid">
+                <!-- Team members will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Member Detail Modal -->
+    <div class="modal-overlay" id="memberModal">
+        <div class="modal-container glass-morphism">
+            <div class="modal-header">
+                <h3 id="memberDetailTitle">Team Member Details</h3>
+                <button class="modal-close" onclick="closeMemberModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="memberDetailContent">
+                <!-- Member details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+	
+	<!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="../images/1.png" alt="Türkiye IT Team" class="team-modal-photo">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+	
+	<!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+<script src="../js/logs.js"></script> 
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/team.js"></script>
+</body>
+</html>

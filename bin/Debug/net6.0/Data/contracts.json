@@ -1,0 +1,197 @@
+{
+  "countries": [
+    {
+      "code": "TR",
+      "name": "Türkiye",
+      "flag": "🇹🇷",
+      "providers": [
+        {
+          "name": "Türk Telekom - Central",
+          "type": "ISP",
+          "service": "Internet",
+          "bandwidth": "200 Mbps",
+          "monthlyCost": 5500,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Türk Telekom - Domestic",
+          "type": "ISP",
+          "service": "Managed Services",
+          "bandwidth": "130 Mbps",
+          "monthlyCost": 1300,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Telegrey PRI",
+          "type": "Telecom",
+          "service": "Voice - PRI",
+          "bandwidth": "2 Mbps",
+          "monthlyCost": 2300,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Telegrey PSTN",
+          "type": "PSTN",
+          "service": "Voice Lines",
+          "bandwidth": "30 Lines",
+          "monthlyCost": 100,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Data - BTK",
+          "type": "Data",
+          "service": "Data Center",
+          "bandwidth": "20 Mbps",
+          "monthlyCost": 200,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Anatolian Depot PSTN",
+          "type": "PSTN",
+          "service": "PSTN Lines",
+          "bandwidth": "3 Lines",
+          "monthlyCost": 5,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Data - ADSL",
+          "type": "ADSL",
+          "service": "ADSL Internet",
+          "bandwidth": "10 Mbps",
+          "monthlyCost": 100,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Data - 4G Modem",
+          "type": "Mobile",
+          "service": "4G Wireless",
+          "bandwidth": "60 GB",
+          "monthlyCost": 50,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Data 4G",
+          "type": "Data",
+          "service": "Fiber Connection",
+          "bandwidth": "",
+          "monthlyCost": 60,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "TTNET - ISTHQ ADSL",
+          "type": "ADSL",
+          "service": "ADSL Business",
+          "bandwidth": "16 Mbps",
+          "monthlyCost": 20,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Vodafone Mobile",
+          "type": "Mobile",
+          "service": "Mobile Services",
+          "bandwidth": "Unlimited",
+          "monthlyCost": 1600,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Yesilsoft",
+          "type": "ISP",
+          "service": "IT Services",
+          "bandwidth": "N/A",
+          "monthlyCost": 9000,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Verizon International",
+          "type": "Telecom",
+          "service": "International Lines",
+          "bandwidth": "100 Mbps",
+          "monthlyCost": null,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Ricoh",
+          "type": "Data",
+          "service": "Equipment Lease",
+          "bandwidth": "N/A",
+          "monthlyCost": 5300,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        },
+        {
+          "name": "Ricoh",
+          "type": "Data",
+          "service": "Paper Print",
+          "bandwidth": "N/A",
+          "monthlyCost": 3000,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": ""
+        }
+      ]
+    },
+    {
+      "code": "ES",
+      "name": "Spain",
+      "flag": "🇪🇸",
+      "providers": [
+        {
+          "name": "Movistar Empresas",
+          "type": "ISP",
+          "service": "Business Internet",
+          "bandwidth": "500 Mbps",
+          "monthlyCost": null,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": "2026-01-30"
+        }
+      ]
+    },
+    {
+      "code": "HU",
+      "name": "Hungary",
+      "flag": "🇭🇺",
+      "providers": [
+        {
+          "name": "Magyar Telekom",
+          "type": "ISP",
+          "service": "Fiber Internet",
+          "bandwidth": "100 Mbps",
+          "monthlyCost": null,
+          "annualCost": null,
+          "contract": "Active",
+          "renewalDate": "2025-11-15"
+        }
+      ]
+    }
+  ],
+  "lastUpdated": "2025-10-16",
+  "currency": "USD"
+}

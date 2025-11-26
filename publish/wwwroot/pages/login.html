@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON - Secure Login</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Login CSS -->
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="horizon-logo">
+                <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON" class="logo-image">
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="login-body">
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText">Success!</span>
+            </div>
+
+            <!-- Error Message -->
+            <!-- Enhanced Message Box -->
+<div id="errorMessage" class="message-box">
+    <div id="errorText">Message</div>
+</div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+                <!-- FedEx ID -->
+                <div class="form-group">
+                    <label class="form-label" for="fedexId">
+                        <i class="fas fa-id-badge"></i> FedEx ID
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="input-icon fas fa-user"></i>
+                        <input 
+                            type="text" 
+                            id="fedexId" 
+                            class="form-input" 
+                            placeholder="Enter your FedEx ID"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="input-icon fas fa-key"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="togglePassword" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-button" id="loginButton">
+    SIGN IN
+</button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+<!-- Footer -->
+<div class="login-footer">    
+    <!-- Last Password Change Info -->
+    <div id="passwordChangeInfo" class="password-change-info" style="display: none;">
+        <p>
+            <i class="fas fa-info-circle"></i>
+            <span id="passwordChangeText">Password last changed: Never</span>
+        </p>
+    </div>
+    
+    <!-- Security Notice -->
+    <div class="security-notice">
+        <p class="notice-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Authorized Access Only
+        </p>
+        <p class="notice-text">
+            This system contains confidential and proprietary information. 
+            Unauthorized access is strictly prohibited. 
+            All activities are monitored and logged.
+        </p>
+        <p class="notice-text">
+            By logging in, you acknowledge that you have read and agree to comply with all company policies 
+            regarding information security and acceptable use.
+        </p>
+    </div>
+    
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>
+            <i class="fas fa-lock"></i>
+            © 2025 Ufuk Celikeloglu • HORIZON IT Management System
+        </p>
+        <p class="version">Version 1.2.2 | All Rights Reserved</p>
+    </div>
+</div>
+    </div>
+
+    <!-- Password Change Modal -->
+   <!-- Password Change Modal -->
+<div id="passwordChangeModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-key"></i> Change Password Required
+            </h2>
+            <p>Please set a new password for your account</p>
+        </div>
+        <div class="modal-body">
+            <form id="passwordChangeForm">
+                <!-- Current Password -->
+                <div class="form-group">
+                    <label class="form-label" for="currentPassword">Current Password</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="currentPassword" 
+                            class="form-input" 
+                            placeholder="Enter current password"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="toggleCurrentPassword" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="form-group">
+                    <label class="form-label" for="newPassword">New Password</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="newPassword" 
+                            class="form-input" 
+                            placeholder="Enter new password"
+                            required
+                            minlength="8"
+                        >
+                        <button type="button" class="password-toggle" id="toggleNewPassword" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small class="input-hint">Minimum 8 characters with at least one number</small>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="input-icon fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            class="form-input" 
+                            placeholder="Confirm new password"
+                            required
+                            minlength="8"
+                        >
+                        <button type="button" class="password-toggle" id="toggleConfirmPassword" tabindex="-1">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Password Strength Indicator -->
+                <div class="password-strength">
+                    <div class="strength-label">Password Strength:</div>
+                    <div class="strength-bar">
+                        <div id="strengthIndicator" class="strength-fill"></div>
+                    </div>
+                    <div id="strengthText" class="strength-text">Enter password</div>
+                </div>
+
+                <button type="submit" class="login-button" id="modalSubmitBtn">
+                    <i class="fas fa-check"></i> Update Password
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Scripts -->
+<script src="../js/logs.js"></script> 
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/login.js"></script>
+</body>
+</html>

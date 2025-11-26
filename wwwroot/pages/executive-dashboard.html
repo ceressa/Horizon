@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Summary - HORIZON</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	
+	<!-- SheetJS for Excel export -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/executive-dashboard.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- PDF Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Twemoji -->
+	<!-- Twemoji for emoji support -->
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+</head>
+
+<body data-theme="dark">
+    <!-- Page Loader -->
+    <div class="executive-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Loading Executive Dashboard...</div>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <!-- Logo Section -->
+            <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+                <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs-container">
+                <div class="nav-tabs">
+                    <!-- Overview -->
+                    <a href="../index.html" class="nav-tab">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-tab-text">Overview</span>
+                    </a>
+                    
+                    <!-- Organization Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="organization">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-tab-text">Organization</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="team.html" class="hz-dropdown-link">
+                                <i class="fas fa-user-group"></i>
+                                <span>Teams</span>
+                            </a>
+                            <a href="locations.html" class="hz-dropdown-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Locations</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Infrastructure Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="infrastructure">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-server"></i>
+                            <span class="nav-tab-text">Infrastructure</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="assets.html" class="hz-dropdown-link">
+                                <i class="fas fa-database"></i>
+                                <span>Assets</span>
+                            </a>
+                            <a href="apps.html" class="hz-dropdown-link">
+                                <i class="fas fa-cubes"></i>
+                                <span>Apps</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Financials Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="financials">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-chart-pie"></i>
+                            <span class="nav-tab-text">Financials</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="projects.html" class="hz-dropdown-link">
+                                <i class="fas fa-project-diagram"></i>
+                                <span>Projects</span>
+                            </a>
+                            <a href="contracts.html" class="hz-dropdown-link">
+                                <i class="fas fa-file-contract"></i>
+                                <span>Contracts</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Reports Dropdown -->
+                    <div class="hz-dropdown active" data-dropdown="reports">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-file-chart-line"></i>
+                            <span class="nav-tab-text">Reports</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="executive-dashboard.html" class="hz-dropdown-link active">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Executive Summary</span>
+                            </a>
+                            <a href="live-comparison.html" class="hz-dropdown-link">
+                                <i class="fas fa-exchange-alt"></i>
+                                <span>Live Comparison</span>
+                            </a>
+                            <a href="coming_soon.html" class="hz-dropdown-link">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Asset Reports</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Right Side -->
+            <div class="header-right">
+                <!-- Live Clock with Timezone -->
+                <div class="live-clock" id="liveClockContainer">
+                    <div class="clock-time" id="liveClock">--:--:--</div>
+                    <div class="clock-date" id="liveDate">Loading...</div>
+                    <div class="clock-timezone" id="clockTimezone">
+                        <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                        <span id="timezoneCode">TR</span>
+                    </div>
+                </div>
+
+                <!-- User Menu Dropdown -->
+                <div class="user-menu-dropdown">
+                    <div class="user-avatar" id="userAvatar">
+                        <span id="userInitials">--</span>
+                    </div>
+                    
+                    <!-- User Dropdown Panel -->
+                    <div class="user-dropdown-panel">
+                        <div class="user-dropdown-header">
+                            <div class="user-dropdown-avatar">
+                                <span id="userInitialsDropdown">--</span>
+                            </div>
+                            <div class="user-dropdown-info">
+                                <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                                <div class="user-dropdown-email" id="userDropdownEmail">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="user-dropdown-menu">
+                            <a href="profile.html" class="user-dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </a>
+                            <a href="settings.html" class="user-dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="#" class="user-dropdown-item" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="executive-dashboard">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-title-wrapper">
+                    <h1 class="page-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Executive Summary Dashboard
+                    </h1>
+                    <div class="header-actions">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top KPIs - ONLY 3 NOW -->
+            <div class="kpi-grid">
+                <!-- Total Assets -->
+                <div class="kpi-card">
+                    <div class="kpi-card-inner">
+                        <div class="kpi-content">
+                            <h3>Total Assets</h3>
+                            <div class="kpi-value">0</div>
+                        </div>
+                        <div class="kpi-icon assets">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countries Covered -->
+                <div class="kpi-card">
+                    <div class="kpi-card-inner">
+                        <div class="kpi-content">
+                            <h3>Countries Covered</h3>
+                            <div class="kpi-value">0</div>
+                        </div>
+                        <div class="kpi-icon countries">
+                            <i class="fas fa-globe-europe"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IT Team Members -->
+                <div class="kpi-card">
+                    <div class="kpi-card-inner">
+                        <div class="kpi-content">
+                            <h3>IT Team Members</h3>
+                            <div class="kpi-value">0</div>
+                        </div>
+                        <div class="kpi-icon employees">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div class="grid-left">
+                    <!-- Asset Distribution -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Asset Distribution</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="assetDistributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Countries -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-map-marked-alt"></i> Top 5 Countries</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="top-countries" id="topCountries">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OS Distribution Chart -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-desktop"></i> Operating Systems</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="osDistributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Current OS Versions (NEW!) -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-check-circle"></i> Supported OS Versions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="currentOSVersions">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+               </div>
+
+                <!-- Center Column -->
+                <div class="grid-center">
+                    <!-- Critical Alerts -->
+                    <div class="dashboard-card alert-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Critical Alerts</h3>
+                            <span class="alert-badge" id="alertCount">0</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="alerts-list" id="alertsList">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Critical Systems -->
+                    <div class="dashboard-card critical-systems-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-shield-alt"></i> Critical Systems</h3>
+                            <span class="critical-badge" id="criticalSystemsBadge">0</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="critical-systems-list" id="criticalSystemsList">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="grid-right">
+                    <!-- Quick Stats -->
+                    <div class="dashboard-card compact">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bolt"></i> Quick Stats</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-stats" id="quickStats">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-timeline" id="activityTimeline">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Warranty Status -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-times"></i> Warranty Status</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="warranty-summary" id="warrantySummary">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<!-- Critical Systems List Modal -->
+<div id="criticalSystemsModal" class="cr-modal-overlay" style="display: none;">
+    <div class="cr-modal-container large-modal">
+        <div class="cr-modal-header">
+            <h2><i class="fas fa-exclamation-triangle"></i> All Critical Systems (299)</h2>
+            <button class="cr-modal-close" onclick="closeCriticalSystemsModal()">&times;</button>
+        </div>
+        
+        <!-- Search & Filter Bar -->
+        <div class="cr-modal-toolbar">
+            <div class="cr-search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="criticalSystemSearch" placeholder="Search by device name, OS, country..." onkeyup="filterCriticalSystems()">
+            </div>
+            <div class="cr-filter-group">
+                <select id="riskFilter" onchange="filterCriticalSystems()" class="cr-filter-select">
+                    <option value="">All Risks</option>
+                    <option value="CRITICAL">Critical</option>
+                    <option value="HIGH">High</option>
+                    <option value="MEDIUM">Medium</option>
+                </select>
+                <select id="countryFilter" onchange="filterCriticalSystems()" class="cr-filter-select">
+                    <option value="">All Countries</option>
+                </select>
+                <button class="cr-export-btn" onclick="exportCriticalSystemsToXLSX()">
+                    <i class="fas fa-file-excel"></i>
+                    Export to Excel
+                </button>
+            </div>
+        </div>
+        
+        <div class="cr-modal-body">
+            <table class="cr-table">
+                <thead>
+                    <tr>
+                        <th width="10%">Risk</th>
+                        <th width="25%">Device Name</th>
+                        <th width="20%">Operating System</th>
+                        <th width="12%">Country</th>
+                        <th width="33%">Issue</th>
+                    </tr>
+                </thead>
+                <tbody id="criticalSystemsTableBody"></tbody>
+            </table>
+            <div id="noResultsMessage" style="display: none; text-align: center; padding: 40px; color: #94a3b8;">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <div style="font-size: 16px; font-weight: 600;">No systems found</div>
+                <div style="font-size: 14px; margin-top: 8px;">Try adjusting your search or filters</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Critical System Detail Modal -->
+<div id="criticalSystemDetailModal" class="cr-modal-overlay" style="display: none;">
+    <div class="cr-modal-container medium-modal">
+        <div class="cr-modal-header">
+            <h2><i class="fas fa-exclamation-circle"></i> Critical System Details</h2>
+            <button class="cr-modal-close" onclick="closeCriticalSystemDetailModal()">&times;</button>
+        </div>
+        <div class="cr-modal-body">
+            <div id="criticalSystemDetailContent"></div>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="../js/logs.js"></script>
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/countries.js"></script>
+    <script src="../js/executive-dashboard.js"></script>
+</body>
+</html>

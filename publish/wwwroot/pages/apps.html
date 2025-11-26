@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Twemoji Support -->
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS Files -->
+	<link rel="stylesheet" href="../css/apps.css">
+    <link rel="stylesheet" href="../css/common.css">
+    
+</head>
+
+<body data-theme="dark">
+    <!-- Header -->
+     <!-- Header Navigation -->
+        <!-- ============================================================
+     HEADER NAVIGATION
+     ============================================================ -->
+<header class="header">
+    <nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs-container">
+            <div class="nav-tabs">
+                <!-- Overview -->
+                <a href="../index.html" class="nav-tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-tab-text">Overview</span>
+                </a>
+                
+                <!-- Organization Dropdown -->
+                <div class="hz-dropdown" data-dropdown="organization">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-tab-text">Organization</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="team.html" class="hz-dropdown-link">
+                            <i class="fas fa-user-group"></i>
+                            <span>Teams</span>
+                        </a>
+                        <a href="locations.html" class="hz-dropdown-link">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Infrastructure Dropdown -->
+                <div class="hz-dropdown active" data-dropdown="infrastructure">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-server"></i>
+                        <span class="nav-tab-text">Infrastructure</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="assets.html" class="hz-dropdown-link">
+                            <i class="fas fa-database"></i>
+                            <span>Assets</span>
+                        </a>
+                        <a href="#" class="hz-dropdown-link active">
+                            <i class="fas fa-cubes"></i>
+                            <span>Apps</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Financials Dropdown -->
+                <div class="hz-dropdown" data-dropdown="financials">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-tab-text">Financials</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="projects.html" class="hz-dropdown-link">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="contracts.html" class="hz-dropdown-link">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Contracts</span>
+                        </a>
+                    </div>
+                </div>
+				
+				<div class="hz-dropdown" data-dropdown="reports">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-file-chart-line"></i>
+                <span class="nav-tab-text">Reports</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="live-comparison.html" class="hz-dropdown-link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Live Comparison</span>
+                </a>
+                <a href="executive-summary.html" class="hz-dropdown-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Executive Summary</span>
+                </a>
+                <a href="asset-reports.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Asset Reports</span>
+                </a>
+            </div>
+        </div>
+                            </div>
+        </div>
+
+        <!-- Header Right Side -->
+        <div class="header-right">
+            <!-- Live Clock with Timezone -->
+            <div class="live-clock" id="liveClockContainer">
+                <div class="clock-time" id="liveClock">--:--:--</div>
+                <div class="clock-date" id="liveDate">Loading...</div>
+                <div class="clock-timezone" id="clockTimezone">
+                    <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                    <span id="timezoneCode">TR</span>
+                </div>
+            </div>
+
+            <!-- Timezone Dropdown -->
+            <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+                <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+                    <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+                    <span>Istanbul (Türkiye)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+                    <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+                    <span>Central Europe</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+                    <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+                    <span>London (UK)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+                    <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+                    <span>Chicago (USA)</span>
+                </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+        </div>
+    </nav>
+</header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-cubes"></i> Local Applications
+            </h1>
+        </div>
+
+        <!-- Filters & Search (Teams Style) -->
+        <div class="team-controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, department, vendor...">
+            </div>
+
+            <select id="countryFilter" class="filter-select">
+                <option value="all">All Countries</option>
+            </select>
+
+            <select id="statusFilter" class="filter-select">
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+
+            <!-- Inactive Apps Toggle -->
+            <div class="inactive-toggle">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="showInactiveToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label">Show Inactive</span>
+            </div>
+
+            <!-- ✅ EXPORT BUTTON -->
+            <button class="btn-export" id="exportBtn" title="Export to Excel">
+                <i class="fas fa-file-excel"></i>
+                <span>Export</span>
+            </button>
+
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="grid" title="Grid View">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="view-btn" data-view="list" title="List View">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Applications Container -->
+        <div class="apps-container" id="appsContainer">
+            <!-- Apps will be rendered here by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No applications found</h3>
+            <p>Try adjusting your filters or search terms</p>
+        </div>
+    </main>
+
+    <!-- ✅ App Detail Modal -->
+    <div class="app-modal-overlay" id="appModal" style="display: none;">
+        <div class="app-modal-container">
+            <button class="app-modal-close" onclick="closeAppModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="app-modal-content" id="appModalContent">
+                <!-- Modal içeriği JavaScript ile doldurulacak -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+        <div class="logout-modal-content">
+            <div class="logout-modal-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-modal-buttons">
+                <button class="logout-btn-cancel" id="cancelLogout">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="logout-btn-confirm" id="confirmLogout">
+                    <i class="fas fa-check"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="../images/1.png" alt="Türkiye IT Team" class="team-modal-photo">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+	<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="../js/logs.js"></script>
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/apps.js"></script>
+    
+    <script>
+        // Twemoji initialization
+        if (typeof twemoji !== 'undefined') {
+            window.addEventListener('load', function() {
+                twemoji.parse(document.body, {
+                    folder: 'svg',
+                    ext: '.svg'
+                });
+            });
+            
+            const observer = new MutationObserver(() => {
+                twemoji.parse(document.body, {
+                    folder: 'svg',
+                    ext: '.svg'
+                });
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+    </script>
+</body>
+</html>

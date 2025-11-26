@@ -1,0 +1,946 @@
+/* ========== SIMPLIFIED COUNTRY DETAIL STYLES ========== */
+
+.country-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Simplified Country Header */
+.country-header {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px 24px; /* Çok daha az padding */
+    margin-bottom: 24px;
+}
+
+.country-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px; /* Reduced from 16px */
+}
+
+.country-header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Flag ile title'ı yan yana */
+    text-align: left; /* Center'dan left'a */
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    background: rgba(132, 204, 22, 0.1);
+    border-color: rgba(132, 204, 22, 0.3);
+    color: #84cc16;
+}
+
+.country-flag-large {
+    font-size: 32px; /* 48px'den 32px'e düşür */
+    margin: 0; /* Auto margin'i kaldır */
+    flex-shrink: 0;
+}
+
+.country-title {
+    font-size: 2rem; /* 2.5rem'den küçült */
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #ffffff;
+}
+
+.country-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+
+
+/* Simplified Statistics Grid */
+.country-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.country-detailed-stat {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.country-detailed-stat:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(132, 204, 22, 0.3);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #84cc16, #22d3ee);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    margin: 0 auto 16px auto;
+}
+
+.stat-value-large {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+.stat-label-large {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+
+/* Simplified Network Topology */
+.network-topology-country {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.topology-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.topology-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.topology-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.topology-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(132, 204, 22, 0.2);
+}
+
+.topology-item-icon {
+    width: 36px;
+    height: 36px;
+    background: #84cc16;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #ffffff;
+    margin: 0 auto 12px auto;
+}
+
+.topology-item-count {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.topology-item-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+
+
+/* Simplified Map Container */
+.map-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.map-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.map-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #ffffff;
+}
+
+.map-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+#countryMap {
+    width: 100%;
+    height: 350px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+
+.custom-popup .leaflet-popup-content-wrapper {
+    background: rgba(15, 23, 35, 0.95);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.custom-popup .leaflet-popup-content {
+    margin: 16px;
+    color: white;
+}
+
+.location-popup h4 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+}
+
+.location-popup .popup-header {
+    padding-left: 12px;
+    margin-left: -8px;
+}
+
+.custom-popup .leaflet-popup-tip {
+    background: rgba(15, 23, 35, 0.95);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+}
+
+/* Simplified Locations List */
+.locations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.location-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.location-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(132, 204, 22, 0.3);
+    transform: translateY(-2px);
+}
+
+.location-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.location-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.location-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.location-code {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: monospace;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.location-address {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+}
+
+.location-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.location-stat {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+}
+
+.location-stat-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+}
+
+.location-stat-value {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+/* Country-specific flag colors */
+.country-header[data-country="TR"] .country-flag-large {
+    filter: drop-shadow(0 8px 20px rgba(227, 10, 23, 0.4));
+}
+
+.country-header[data-country="GR"] .country-flag-large {
+    filter: drop-shadow(0 8px 20px rgba(13, 94, 175, 0.4));
+}
+
+.country-header[data-country="BG"] .country-flag-large {
+    filter: drop-shadow(0 8px 20px rgba(0, 150, 110, 0.4));
+}
+
+.country-header[data-country="SI"] .country-flag-large {
+    filter: drop-shadow(0 8px 20px rgba(0, 86, 160, 0.4));
+}
+
+.country-header[data-country="CY"] .country-flag-large {
+    filter: drop-shadow(0 8px 20px rgba(255, 153, 51, 0.4));
+}
+
+@media (max-width: 768px) {
+    .country-detail-container { padding: 16px; }
+    .country-flag-large { font-size: 40px; }
+    .country-title { font-size: 2rem; }
+    .country-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .stat-value-large { font-size: 1.6rem; }
+    .topology-grid { grid-template-columns: repeat(2, 1fr); }
+    #countryMap { height: 280px; }
+    .locations-list { grid-template-columns: 1fr; }
+}
+
+
+/* Twemoji fixes for country detail */
+.country-flag-large img.emoji {
+    width: 64px !important;
+    height: 64px !important;
+    margin: 0 !important;
+}
+
+.location-icon img.emoji {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Location Card Enhanced Styles */
+.location-card {
+    background: linear-gradient(145deg, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.04) 100%);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        var(--location-type-color, #0D5EAF) 0%, 
+        rgba(255, 255, 255, 0.3) 100%);
+    opacity: 0.7;
+}
+
+.location-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(132, 204, 22, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.location-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.location-details {
+    flex: 1;
+}
+
+.location-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.location-code {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.location-address {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.location-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.location-stat {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: left;
+}
+
+.location-stat-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.location-stat-value {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.location-stat-value i {
+    width: 12px;
+    text-align: center;
+}
+
+/* Premium Map Legend */
+.map-legend {
+    background: linear-gradient(135deg, rgba(40, 40, 65, 0.85), rgba(20, 20, 45, 0.85));
+    backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    min-width: 220px;
+    max-width: 270px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.map-legend:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* Refined Map Legend (No Size Increase) */
+.map-legend {
+    background: linear-gradient(145deg, rgba(30, 30, 50, 0.95), rgba(15, 15, 35, 0.95));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    min-width: 200px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.legend-header h4 {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.legend-header p {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 2px 0 0 0;
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* renk ve yazı aynı hizada */
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 2px 0;
+}
+
+/* Team Section Styles */
+        .team-section {
+            margin: 40px 0;
+        }
+
+        .team-showcase-card {
+            background: linear-gradient(135deg, rgba(227, 10, 23, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(227, 10, 23, 0.2);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .team-photo-container {
+            position: relative;
+            flex: 0 0 300px;
+        }
+
+        .team-group-photo {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .team-group-photo:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 25px 60px rgba(227, 10, 23, 0.2);
+        }
+
+        .team-photo-overlay {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+        }
+
+        .team-badge {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .team-info-panel {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .team-leader {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(227, 10, 23, 0.2);
+        }
+
+        .leader-avatar {
+            font-size: 32px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #84cc16, #22d3ee);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .leader-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .leader-info p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .team-stats {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+
+        .team-stat {
+            text-align: center;
+        }
+
+        .team-stat .stat-number {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #84cc16;
+            margin-bottom: 4px;
+        }
+
+        .team-stat .stat-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .team-description {
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 968px) {
+            .team-showcase-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .team-photo-container {
+                flex: none;
+                max-width: 250px;
+            }
+            
+            .team-stats {
+                justify-content: center;
+            }
+        }
+		
+		/* IST Flights Special Button */
+.special-actions-section {
+    margin: 30px 0;
+}
+
+.ist-flights-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, 
+        rgba(132, 204, 22, 0.1),
+        rgba(34, 211, 238, 0.1)
+    );
+    border: 2px solid rgba(132, 204, 22, 0.3);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ist-flights-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(132, 204, 22, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.ist-flights-button:hover::before {
+    left: 100%;
+}
+
+.ist-flights-button:hover {
+    border-color: rgba(132, 204, 22, 0.6);
+    background: linear-gradient(135deg, 
+        rgba(132, 204, 22, 0.15),
+        rgba(34, 211, 238, 0.15)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(132, 204, 22, 0.3);
+}
+
+.button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(132, 204, 22, 0.2);
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.button-icon i {
+    font-size: 28px;
+    color: #84cc16;
+}
+
+.button-content {
+    flex: 1;
+    text-align: left;
+}
+
+.button-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.button-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.button-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(132, 204, 22, 0.15);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.button-arrow i {
+    font-size: 16px;
+    color: #84cc16;
+    transition: transform 0.3s ease;
+}
+
+.ist-flights-button:hover .button-arrow {
+    background: rgba(132, 204, 22, 0.3);
+}
+
+.ist-flights-button:hover .button-arrow i {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .ist-flights-button {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .button-content {
+        text-align: center;
+    }
+}
+
+.legend-color {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.legend-label {
+    font-weight: 500;
+    line-height: 1.2;
+    flex: 1;
+    text-align: left;
+}
+
+.legend-total {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 4px;
+    margin-top: 6px !important;
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+
+/* Enhanced Popup Styles */
+.popup-content {
+    padding: 0 16px 12px 16px;
+}
+
+.popup-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.popup-field {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup-field:last-child {
+    border-bottom: none;
+}
+
+.popup-field strong {
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 60px;
+}
+
+/* Map marker styles */
+.custom-marker {
+    background: linear-gradient(135deg, #84cc16, #22d3ee);
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(132, 204, 22, 0.4);
+}
+
+/* Leaflet popup custom styles */
+.leaflet-popup-content-wrapper {
+    background: linear-gradient(145deg, rgba(30, 30, 50, 0.95), rgba(15, 15, 35, 0.95));
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-popup-content {
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.leaflet-popup-tip {
+    background: rgba(30, 30, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-icon {
+    background: linear-gradient(135deg, var(--country-primary), var(--country-secondary));
+}
+
+.country-detailed-stat:hover {
+    border-color: var(--country-primary);
+    box-shadow: 0 8px 25px var(--country-glow);
+}
+
+.topology-item-icon {
+    background: var(--country-primary);
+}
+
+.topology-item:hover {
+    border-color: var(--country-primary);
+}
+
+.refresh-button {
+    background: var(--country-glow);
+    border-color: var(--country-primary);
+    color: var(--country-primary);
+}
+
+.back-button:hover {
+    border-color: var(--country-primary);
+    color: var(--country-primary);
+}

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - HORIZON IT Management</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- ✅ AUTH SCRİPTLERİ - BURALARI EKLE -->
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    
+    <!-- Twemoji Support for Flags -->
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/projects.css">
+</head>
+
+<body data-theme="dark">
+    <!-- Header -->
+       <!-- ============================================================
+     HEADER NAVIGATION
+     ============================================================ -->
+<header class="header">
+<nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+    <div class="nav-tabs">
+        <!-- Overview -->
+        <a href="../index.html" class="nav-tab">
+            <i class="fas fa-chart-line"></i>
+            <span class="nav-tab-text">Overview</span>
+        </a>
+        
+        <!-- Organization Dropdown -->
+        <div class="hz-dropdown" data-dropdown="organization">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-users"></i>
+                <span class="nav-tab-text">Organization</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="team.html" class="hz-dropdown-link">
+                    <i class="fas fa-user-group"></i>
+                    <span>Teams</span>
+                </a>
+                <a href="locations.html" class="hz-dropdown-link">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Locations</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Infrastructure Dropdown -->
+        <div class="hz-dropdown" data-dropdown="infrastructure">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-server"></i>
+                <span class="nav-tab-text">Infrastructure</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="assets.html" class="hz-dropdown-link">
+                    <i class="fas fa-database"></i>
+                    <span>Assets</span>
+                </a>
+                <a href="#" class="hz-dropdown-link">
+                    <i class="fas fa-cubes"></i>
+                    <span>Apps</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Financials Dropdown - ✅ AKTİF -->
+        <div class="hz-dropdown active" data-dropdown="financials">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-chart-pie"></i>
+                <span class="nav-tab-text">Financials</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="projects.html" class="hz-dropdown-link active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="contracts.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Contracts</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Settings -->
+        <a href="settings.html" class="nav-tab">
+            <i class="fas fa-cog"></i>
+            <span class="nav-tab-text">Settings</span>
+        </a>
+    </div>
+</div>
+
+<!-- Header Right Side -->
+<div class="header-right">
+    <!-- Live Clock with Timezone -->
+    <div class="live-clock" id="liveClockContainer">
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="clock-date" id="liveDate">Loading...</div>
+        <div class="clock-timezone" id="clockTimezone">
+            <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+            <span id="timezoneCode">TR</span>
+        </div>
+    </div>
+
+    <!-- Timezone Dropdown -->
+    <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+        <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+            <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+            <span>Istanbul (Türkiye)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+            <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+            <span>Central Europe</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+            <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+            <span>London (UK)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+            <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+            <span>Chicago (USA)</span>
+        </div>
+    </div>
+
+    <!-- ✅ USER MENU DROPDOWN - TAM VERSİYON -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+    </nav>
+</header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading Screen -->
+        <div id="prjLoadingScreen" class="prj-loading-screen">
+            <div class="prj-loading-spinner"></div>
+            <div class="prj-loading-text">Loading Projects...</div>
+        </div>
+
+<div class="prj-controls-bar">
+    <!-- Sol taraf - sadece Search -->
+    <div class="prj-search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="prjSearchInput" placeholder="Search projects..." autocomplete="off" />
+    </div>
+
+    <!-- Sağ taraf - Sort, Filters, New Project -->
+    <div class="prj-controls-right">
+        <div class="prj-sort-box">
+            <i class="fas fa-sort"></i>
+            <select id="prjSortSelect" class="prj-sort-select">
+                <option value="priority">Sort by Priority</option>
+                <option value="country">Sort by Country</option>
+                <option value="status">Sort by Status</option>
+                <option value="scale">Sort by Scale</option>
+                <option value="progress">Sort by Progress</option>
+                <option value="name">Sort by Name</option>
+                <option value="date">Sort by Date</option>
+            </select>
+        </div>
+
+        <button class="prj-filter-toggle" id="prjFilterToggle">
+            <i class="fas fa-filter"></i>
+            <span class="prj-filter-text">Filters</span>
+        </button>
+
+        <button class="prj-add-btn" id="prjAddBtn">
+            <i class="fas fa-plus"></i>
+            New Project
+        </button>
+    </div>
+</div>
+
+<!-- Filters Panel (Collapsible) -->
+<div class="prj-filters-panel" id="prjFiltersPanel">
+    <div class="prj-filters-header">
+        <h3>Filter Projects</h3>
+        <button class="prj-clear-filters" id="prjClearFilters">
+            <i class="fas fa-times-circle"></i> Clear All
+        </button>
+    </div>
+    <div class="prj-filters-content">
+        <div class="prj-filter-group">
+            <label for="prjStatusFilter">Status</label>
+            <select id="prjStatusFilter">
+                <option value="all">All Statuses</option>
+            </select>
+        </div>
+
+        <div class="prj-filter-group">
+            <label for="prjCountryFilter">Country</label>
+            <select id="prjCountryFilter">
+                <option value="all">All Countries</option>
+            </select>
+        </div>
+
+        <div class="prj-filter-group">
+            <label for="prjScaleFilter">Scale</label>
+            <select id="prjScaleFilter">
+                <option value="all">All Scales</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+        <!-- Projects List Container -->
+        <div id="prjProjectsList" class="prj-projects-list"></div>
+    </main>
+	
+	<!-- Project Detail Modal -->
+    <div class="prj-modal-overlay" id="prjProjectModal" style="display: none;">
+        <div class="prj-modal-container">
+            <div class="prj-modal-body" id="prjModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div class="prj-modal-overlay" id="prjEditModal" style="display: none;">
+        <div class="prj-modal-container">
+            <div class="prj-modal-actions">
+                <button class="prj-action-btn prj-close-btn" id="prjCloseEditBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="prj-modal-body">
+                <div class="prj-form-container">
+                    <h3 class="prj-form-title">
+                        <i class="fas fa-edit"></i> Edit Project
+                    </h3>
+                    <form id="prjEditForm">
+                        <div class="prj-form-group">
+                            <label for="prjEditName">
+                                <i class="fas fa-heading"></i> Project Name
+                            </label>
+                            <input type="text" id="prjEditName" placeholder="Enter project name" required />
+                        </div>
+
+                        <div class="prj-form-group">
+                            <label for="prjEditDescription">
+                                <i class="fas fa-align-left"></i> Description
+                            </label>
+                            <textarea id="prjEditDescription" rows="4" placeholder="Describe the project..."></textarea>
+                        </div>
+
+                        <div class="prj-form-row">
+                            <div class="prj-form-group">
+                                <label for="prjEditProgress"><i class="fas fa-tasks"></i> Progress (%)</label>
+                                <input type="number" id="prjEditProgress" min="0" max="100" placeholder="0-100" />
+                            </div>
+                            <div class="prj-form-group">
+                                <label for="prjEditStatus"><i class="fas fa-flag"></i> Status</label>
+                                <select id="prjEditStatus">
+                                    <option value="not-started">Not Started</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="on-hold">On Hold</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="prj-form-row">
+                            <div class="prj-form-group">
+                                <label for="prjEditScale"><i class="fas fa-ruler"></i> Scale</label>
+                                <select id="prjEditScale">
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large">Large</option>
+                                    <option value="enterprise">Enterprise</option>
+                                </select>
+                            </div>
+                            <div class="prj-form-group">
+                                <label for="prjEditPlanview"><i class="fas fa-hashtag"></i> Planview Number</label>
+                                <input type="text" id="prjEditPlanview" placeholder="Optional" />
+                            </div>
+                        </div>
+
+                        <div class="prj-form-row">
+                            <div class="prj-form-group">
+                                <label for="prjEditStartDate"><i class="far fa-calendar-plus"></i> Start Date</label>
+                                <input type="date" id="prjEditStartDate" />
+                            </div>
+                            <div class="prj-form-group">
+                                <label for="prjEditDeliveryDate"><i class="far fa-calendar-check"></i> Delivery Date</label>
+                                <input type="date" id="prjEditDeliveryDate" />
+                            </div>
+                        </div>
+
+                        <div class="prj-form-actions">
+                            <button type="button" class="prj-btn prj-btn-secondary" id="prjCancelEditBtn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="prj-btn prj-btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
+
+    <!-- Create Project Modal (Flow) -->
+    <div class="prj-modal-overlay" id="prjCreateModal" style="display: none;">
+        <div class="prj-modal-container">
+            <div class="prj-modal-actions">
+                <button class="prj-action-btn prj-close-btn" onclick="closeCreateModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="prj-modal-body">
+                <div class="prj-create-flow" id="prjCreateFlowContainer">
+                    <!-- Flow content will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG Gradients -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <linearGradient id="prjProgressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#84cc16;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <script src="../js/countries.js"></script>  <!-- ✅ ÖNCE COUNTRIES -->
+    <script src="../js/common.js"></script>     <!-- ✅ SONRA COMMON -->
+    <script src="../js/projects.js"></script>    <!-- ✅ EN SON PROJECTS -->
+    <script>
+        // Twemoji initialization
+    if (typeof twemoji !== 'undefined') {
+        window.addEventListener('load', function() {
+            twemoji.parse(document.body, {
+                folder: 'svg',
+                ext: '.svg'
+            });
+        });
+        
+        // Twemoji'yi her render sonrası da çalıştır
+        const observer = new MutationObserver(() => {
+            twemoji.parse(document.body, {
+                folder: 'svg',
+                ext: '.svg'
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    } else {
+        console.warn('Twemoji not loaded');
+    }
+    </script>
+	
+	<!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="../images/1.png" alt="Türkiye IT Team" class="team-modal-photo">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+	
+	<!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+
+</body>
+</html>

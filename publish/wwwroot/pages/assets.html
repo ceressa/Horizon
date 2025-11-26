@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Assets - HORIZON</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- Twemoji for Flags -->
+    <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/assets.css">
+    
+    <!-- Auth Service -->
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+</head>
+
+<body data-theme="dark" style="opacity: 0; transition: opacity 0.8s ease;">
+    
+<!-- LOADING SPINNER -->
+<div id="assetsPageLoader" class="assets-page-loader active">
+    <div class="assets-loader-content">
+        <div class="assets-loader-logo-container">
+            <div class="assets-loader-ring"></div>
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" 
+                 alt="HORIZON" 
+                 class="assets-loader-logo">
+        </div>
+        <p class="assets-loader-text">Loading Hardware Assets...</p>
+        <div class="assets-loader-progress">
+            <div class="assets-loader-progress-fill"></div>
+        </div>
+        <div class="assets-loader-progress-text">0%</div>
+    </div>
+</div>
+
+<!-- HEADER NAVIGATION -->
+<header class="header">
+<nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+    <div class="nav-tabs">
+        <!-- Overview -->
+        <a href="../index.html" class="nav-tab">
+            <i class="fas fa-chart-line"></i>
+            <span class="nav-tab-text">Overview</span>
+        </a>
+        
+        <!-- Organization Dropdown -->
+        <div class="hz-dropdown" data-dropdown="organization">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-users"></i>
+                <span class="nav-tab-text">Organization</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="team.html" class="hz-dropdown-link">
+                    <i class="fas fa-user-group"></i>
+                    <span>Teams</span>
+                </a>
+                <a href="locations.html" class="hz-dropdown-link">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Locations</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Infrastructure Dropdown -->
+        <div class="hz-dropdown active" data-dropdown="infrastructure">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-server"></i>
+                <span class="nav-tab-text">Infrastructure</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="assets.html" class="hz-dropdown-link active">
+                    <i class="fas fa-database"></i>
+                    <span>Assets</span>
+                </a>
+                <a href="#" class="hz-dropdown-link">
+                    <i class="fas fa-cubes"></i>
+                    <span>Apps</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Financials Dropdown - ✅ AKTİF -->
+        <div class="hz-dropdown" data-dropdown="financials">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-chart-pie"></i>
+                <span class="nav-tab-text">Financials</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="projects.html" class="hz-dropdown-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Projects</span>
+                </a>
+                <a href="contracts.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Contracts</span>
+                </a>
+            </div>
+        </div>
+		
+		<div class="hz-dropdown" data-dropdown="reports">
+            <span class="hz-dropdown-trigger">
+                <i class="fas fa-file-chart-line"></i>
+                <span class="nav-tab-text">Reports</span>
+                <i class="fas fa-chevron-down hz-arrow"></i>
+            </span>
+            <div class="hz-dropdown-panel">
+                <a href="live-comparison.html" class="hz-dropdown-link">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Live Comparison</span>
+                </a>
+                <a href="coming-soon.html" class="hz-dropdown-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Executive Summary</span>
+                </a>
+                <a href="coming-soon.html" class="hz-dropdown-link">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Asset Reports</span>
+                </a>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<!-- Header Right Side -->
+<div class="header-right">
+    <!-- Live Clock with Timezone -->
+    <div class="live-clock" id="liveClockContainer">
+        <div class="clock-time" id="liveClock">--:--:--</div>
+        <div class="clock-date" id="liveDate">Loading...</div>
+        <div class="clock-timezone" id="clockTimezone">
+            <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+            <span id="timezoneCode">TR</span>
+        </div>
+    </div>
+
+    <!-- Timezone Dropdown -->
+    <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+        <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+            <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+            <span>Istanbul (Türkiye)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+            <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+            <span>Central Europe</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+            <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+            <span>London (UK)</span>
+        </div>
+        <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+            <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+            <span>Chicago (USA)</span>
+        </div>
+    </div>
+
+    <!-- ✅ USER MENU DROPDOWN - TAM VERSİYON -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+    </nav>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-left">
+                <h1 class="section-title">
+                    <i class="fas fa-database section-title-icon"></i>
+                    Hardware Assets
+                </h1>
+                <p class="section-subtitle">Comprehensive hardware inventory and asset tracking across all locations</p>
+            </div>
+            <div class="section-header-right">
+                <button class="action-btn primary" onclick="refreshAssets()">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <div class="filter-label">
+                    <i class="fas fa-globe"></i>
+                    Filter by Country
+                </div>
+                <div class="country-filters" id="countryFilters"></div>
+            </div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="assets-container" id="assetsContainer"></div>
+    </div>
+</div>
+
+<!-- ASSETS LIST MODAL -->
+<div class="assets-modal-overlay" id="assetsDetailModal">
+    <div class="assets-modal-dialog">
+        <div class="assets-modal-header">
+            <div class="assets-modal-title-container">
+                <h2 class="assets-modal-title" id="modalTitle">Assets List</h2>
+                <div class="assets-modal-subtitle" id="modalSubtitle"></div>
+            </div>
+            <button class="assets-close-modal" onclick="closeAssetModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="assets-modal-body">
+            <div class="assets-modal-search-bar">
+                <div class="assets-search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search assets..." class="assets-search-input" id="assetsSearchInput" oninput="searchAssets()">
+                </div>
+                <button class="action-btn secondary" onclick="toggleFiltersPanel()" id="toggleFiltersBtn">
+                    <i class="fas fa-filter"></i>
+                    Filters
+                    <span class="filter-count-badge" id="filterCountBadge" style="display: none;">0</span>
+                </button>
+                <button class="action-btn primary" onclick="exportToCSV()">
+                    <i class="fas fa-file-export"></i>
+                    Export
+                </button>
+            </div>
+
+            <div class="assets-filters-panel collapsed" id="filtersPanel">
+                <div class="filters-grid">
+                    <div class="filter-section">
+                        <div class="filter-section-header">
+                            <span class="filter-section-label">
+                                <i class="fas fa-layer-group"></i> Device Type
+                            </span>
+                        </div>
+                        <div class="modal-category-chips" id="modalCategoryFilters"></div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-section-header">
+                            <span class="filter-section-label">
+                                <i class="fas fa-map-marker-alt"></i> Location
+                            </span>
+                        </div>
+                        <div class="location-filter-dropdown">
+                            <select id="locationFilterSelect" class="filter-select" onchange="filterByLocation()">
+                                <option value="all">All Locations</option>
+                            </select>
+                        </div>
+                    </div>
+					
+					<!-- Operating System Filter -->
+<div class="filter-section">
+    <div class="filter-section-header">
+        <span class="filter-section-label">
+            <i class="fas fa-desktop"></i> Operating System
+        </span>
+    </div>
+    <div class="modal-filter-chips" id="osFilterChips">
+        <div class="modal-filter-chip active" data-os="all" onclick="setOSFilter('all')">
+            <i class="fas fa-globe"></i>
+            <span>All OS</span>
+        </div>
+        <div class="modal-filter-chip" data-os="Windows 11" onclick="setOSFilter('Windows 11')">
+            <i class="fab fa-windows"></i>
+            <span>Windows 11</span>
+        </div>
+        <div class="modal-filter-chip" data-os="Windows 10" onclick="setOSFilter('Windows 10')">
+            <i class="fab fa-windows"></i>
+            <span>Windows 10</span>
+        </div>
+    </div>
+</div>
+
+<!-- Activity Filter -->
+<div class="filter-section">
+    <div class="filter-section-header">
+        <span class="filter-section-label">
+            <i class="fas fa-clock"></i> Last Activity
+        </span>
+    </div>
+    <div class="modal-filter-chips" id="activityFilterChips">
+        <div class="modal-filter-chip active" data-activity="all" onclick="setActivityFilter('all')">
+            <i class="fas fa-infinity"></i>
+            <span>All time</span>
+        </div>
+        <div class="modal-filter-chip" data-activity="30" onclick="setActivityFilter('30')">
+            <i class="fas fa-circle-check"></i>
+            <span>Last 30 days</span>
+        </div>
+        <div class="modal-filter-chip" data-activity="60" onclick="setActivityFilter('60')">
+            <i class="fas fa-circle-exclamation"></i>
+            <span>Last 60 days</span>
+        </div>
+        <div class="modal-filter-chip" data-activity="90" onclick="setActivityFilter('90')">
+            <i class="fas fa-triangle-exclamation"></i>
+            <span>Last 90 days</span>
+        </div>
+    </div>
+</div>
+
+
+                    <div class="filter-section">
+                        <div class="filter-section-header">
+                            <span class="filter-section-label">
+                                <i class="fas fa-chart-pie"></i> Utilization
+                            </span>
+                        </div>
+                        <div class="modal-filter-chips">
+                            <div class="modal-filter-chip active" data-utilization="all" onclick="filterByUtilization('all')">
+                                <i class="fas fa-globe"></i>
+                                <span>All</span>
+                            </div>
+                            <div class="modal-filter-chip" data-utilization="Dedicated" onclick="filterByUtilization('Dedicated')">
+                                <i class="fas fa-user"></i>
+                                <span>Dedicated</span>
+                            </div>
+                            <div class="modal-filter-chip" data-utilization="Shared" onclick="filterByUtilization('Shared')">
+                                <i class="fas fa-users"></i>
+                                <span>Shared</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-section-header">
+                            <span class="filter-section-label">
+                                <i class="fas fa-bolt"></i> Quick Filters
+                            </span>
+                        </div>
+                        <div class="quick-filters-row">
+                            <div class="modal-quick-filter" data-filter="has_ip" onclick="toggleQuickFilter('has_ip', this)">
+                                <i class="fas fa-network-wired"></i>
+                                <span>Has IP</span>
+                            </div>
+                            <div class="modal-quick-filter" data-filter="has_mac" onclick="toggleQuickFilter('has_mac', this)">
+                                <i class="fas fa-fingerprint"></i>
+                                <span>Has MAC</span>
+                            </div>
+                            <div class="modal-quick-filter" data-filter="has_warranty" onclick="toggleQuickFilter('has_warranty', this)">
+                                <i class="fas fa-shield-halved"></i>
+                                <span>Warranty</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button class="action-btn secondary small" onclick="clearAllFilters()">
+                        <i class="fas fa-times-circle"></i>
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+			
+			
+
+<!-- ASSETS TABLE -->
+<div class="assets-table-container">
+    <table class="assets-table" id="assetsDetailTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable('model_category')">
+                    <i class="fas fa-layer-group"></i> Type
+                    <i class="fas fa-sort"></i>
+                </th>
+                <th onclick="sortTable('configuration_item')">
+                    <i class="fas fa-desktop"></i> Hostname
+                    <i class="fas fa-sort"></i>
+                </th>
+                <th onclick="sortTable('model')">
+                    <i class="fas fa-microchip"></i> Model
+                    <i class="fas fa-sort"></i>
+                </th>
+                <th onclick="sortTable('serial_number')">
+                    <i class="fas fa-barcode"></i> Serial
+                    <i class="fas fa-sort"></i>
+                </th>
+                <th onclick="sortTable('assigned_to')">
+                    <i class="fas fa-user"></i> Assigned To
+                    <i class="fas fa-sort"></i>
+                </th>
+                <th onclick="sortTable('city')">
+                    <i class="fas fa-map-marker-alt"></i> Location
+                    <i class="fas fa-sort"></i>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="assetsTableBody">
+            <!-- Rows rendered dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<!-- TABLE FOOTER -->
+<div class="assets-table-footer">
+    <span class="assets-table-result-count">
+        Showing <strong id="assetsResultCount">0</strong> assets
+    </span>
+</div>
+
+<!-- ASSET DETAIL INFO SUB-MODAL -->
+<div class="asset-info-modal" id="assetInfoModal" style="display:none;">
+    <div class="asset-modal">
+        <div class="asset-modal-header">
+            <h2 id="assetInfoTitle">
+                <i class="fas fa-circle-info"></i> Asset Details
+            </h2>
+            <button class="assets-close-modal" onclick="closeAssetInfoModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="asset-modal-body">
+
+            <div class="asset-detail-section">
+    <h3 class="asset-section-title">Basic Information</h3>
+    <div class="asset-detail-grid" id="assetBasicInfo"></div>
+</div>
+
+<div class="asset-detail-section">
+    <h3 class="asset-section-title">Technical Details</h3>
+    <div class="asset-detail-grid" id="assetTechnicalInfo"></div>
+</div>
+
+<div class="asset-detail-section">
+    <h3 class="asset-section-title">Asset Lifecycle</h3>
+    <div class="asset-detail-grid" id="assetLifecycleInfo"></div>
+</div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-container">
+        <p class="footer-credit">
+            Developed with passion by 
+            <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+        </p>
+    </div>
+</footer>
+
+<div class="team-modal" id="teamModal">
+    <div class="team-modal-content">
+        <button class="close-modal" onclick="closeTeamModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <h3>Development Team</h3>
+        <div class="team-member-card">
+            <h4>Ufuk Celikeloglu</h4>
+            <p>Lead Developer & IT Manager</p>
+            <p>Turkey FIT Team</p>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="../js/countries.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/assets.js"></script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - HORIZON</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    
+    <!-- Auth Service - MUST BE FIRST -->
+    <script src="../js/auth-service.js"></script>
+    
+    <!-- Auth Guard - AUTO UI SETUP -->
+    <script src="../js/auth-guard.js"></script>
+</head>
+
+<body data-theme="dark">
+    <!-- Header Navigation -->
+       <!-- ============================================================
+     HEADER NAVIGATION
+     ============================================================ -->
+<header class="header">
+    <nav class="nav-container">
+        <!-- Logo Section -->
+        <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs-container">
+            <div class="nav-tabs">
+                <!-- Overview -->
+                <a href="../index.html" class="nav-tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-tab-text">Overview</span>
+                </a>
+                
+                <!-- Organization Dropdown -->
+                <div class="hz-dropdown" data-dropdown="organization">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-tab-text">Organization</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="team.html" class="hz-dropdown-link">
+                            <i class="fas fa-user-group"></i>
+                            <span>Teams</span>
+                        </a>
+                        <a href="locations.html" class="hz-dropdown-link">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Infrastructure Dropdown -->
+                <div class="hz-dropdown active" data-dropdown="infrastructure">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-server"></i>
+                        <span class="nav-tab-text">Infrastructure</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="assets.html" class="hz-dropdown-link active">
+                            <i class="fas fa-database"></i>
+                            <span>Assets</span>
+                        </a>
+                        <a href="#" class="hz-dropdown-link">
+                            <i class="fas fa-cubes"></i>
+                            <span>Apps</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Financials Dropdown -->
+                <div class="hz-dropdown" data-dropdown="financials">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-tab-text">Financials</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="projects.html" class="hz-dropdown-link">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="financial.html" class="hz-dropdown-link">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Contracts</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <a href="settings.html" class="nav-tab">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-tab-text">Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Header Right Side -->
+        <div class="header-right">
+            <!-- Live Clock with Timezone -->
+            <div class="live-clock" id="liveClockContainer">
+                <div class="clock-time" id="liveClock">--:--:--</div>
+                <div class="clock-date" id="liveDate">Loading...</div>
+                <div class="clock-timezone" id="clockTimezone">
+                    <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                    <span id="timezoneCode">TR</span>
+                </div>
+            </div>
+
+            <!-- Timezone Dropdown -->
+            <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+                <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+                    <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+                    <span>Istanbul (Türkiye)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+                    <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+                    <span>Central Europe</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+                    <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+                    <span>London (UK)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+                    <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+                    <span>Chicago (USA)</span>
+                </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
+    <div class="user-menu-dropdown">
+        <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">--</span>
+        </div>
+        
+        <!-- User Dropdown Panel -->
+        <div class="user-dropdown-panel">
+            <div class="user-dropdown-header">
+                <div class="user-dropdown-avatar">
+                    <span id="userInitialsDropdown">--</span>
+                </div>
+                <div class="user-dropdown-info">
+                    <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                    <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                </div>
+            </div>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <a href="pages/profile.html" class="user-dropdown-item">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+            
+            <a href="pages/settings.html" class="user-dropdown-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            
+            <div class="user-dropdown-divider"></div>
+            
+            <button class="user-dropdown-item logout-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+        </div>
+    </nav>
+</header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Section Header -->
+        <div class="section-header">
+            <h1 class="section-title">Settings & Preferences</h1>
+            <p class="section-subtitle">Customize your HORIZON experience and manage your account</p>
+        </div>
+
+        <!-- Settings Container -->
+        <div class="settings-container">
+            <!-- Account Settings -->
+            <div class="settings-section">
+                <div class="section-header-small">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>Account Settings</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Profile Information</h3>
+                        <p id="userEmail">Loading...</p>
+                    </div>
+                    <span class="badge badge-success">
+                        <i class="fas fa-check-circle"></i> Active
+                    </span>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Change Password</h3>
+                        <p>Update your password for security</p>
+                    </div>
+                    <button class="setting-btn" onclick="showPasswordChangeModal()">
+                        <i class="fas fa-key"></i> Change
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <div class="section-header-small">
+                    <i class="fas fa-bell"></i>
+                    <h2>Notifications</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Email Notifications</h3>
+                        <p>Receive updates via email</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Project Updates</h3>
+                        <p>Get notified about project changes</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="projectNotifications" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>System Alerts</h3>
+                        <p>Critical system notifications</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="systemAlerts" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- System Preferences -->
+            <div class="settings-section">
+                <div class="section-header-small">
+                    <i class="fas fa-sliders-h"></i>
+                    <h2>System Preferences</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Timezone</h3>
+                        <p>Automatically detected based on your primary country</p>
+                    </div>
+                    <select class="setting-select" id="timezoneSelect" onchange="saveSettings()">
+                        <option value="auto">Auto Detect</option>
+                        <option value="Europe/Istanbul">Istanbul (TRT)</option>
+                        <option value="Europe/Athens">Athens (EET)</option>
+                        <option value="Europe/Sofia">Sofia (EET)</option>
+                        <option value="Europe/Ljubljana">Ljubljana (CET)</option>
+                        <option value="Europe/Madrid">Madrid (CET)</option>
+                        <option value="Europe/Prague">Prague (CET)</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Date Format</h3>
+                        <p>Choose how dates are displayed</p>
+                    </div>
+                    <select class="setting-select" id="dateFormat" onchange="saveSettings()">
+                        <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                        <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                        <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                    </select>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Compact Mode</h3>
+                        <p>Use a more compact layout</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="compactMode" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Privacy & Security -->
+            <div class="settings-section">
+                <div class="section-header-small">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Privacy & Security</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Session History</h3>
+                        <p>View your recent login activity</p>
+                    </div>
+                    <button class="setting-btn" onclick="viewSessions()">
+                        <i class="fas fa-history"></i> View
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Last Login</h3>
+                        <p id="lastLoginInfo">Loading...</p>
+                    </div>
+                    <span class="badge badge-info">
+                        <i class="fas fa-clock"></i> <span id="lastLoginTime">-</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Data Management -->
+            <div class="settings-section danger-zone">
+                <div class="section-header-small">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>Data Management</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Export Settings</h3>
+                        <p>Download your preferences</p>
+                    </div>
+                    <button class="setting-btn" onclick="exportSettings()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h3>Reset Settings</h3>
+                        <p>Restore default preferences</p>
+                    </div>
+                    <button class="setting-btn" onclick="resetSettings()">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Status -->
+        <div class="save-status" id="saveStatus" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <span>Settings saved successfully</span>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name" onclick="showTeamModal()">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Password Change Modal -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="modal-close" onclick="closePasswordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordChangeForm" onsubmit="handlePasswordChange(event)">
+                    <div class="form-group">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                        <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div id="teamModal" class="team-modal" onclick="closeTeamModal()">
+        <div class="team-modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+            <h3>Meet the Türkiye IT Team</h3>
+            <img src="../images/1.png" alt="Türkiye IT Team" class="team-modal-photo">
+            <p class="team-modal-caption">Led by <strong>Guliz Ketenci</strong></p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+<script src="../js/logs.js"></script> 
+    <script src="../js/common.js"></script>
+    <script src="../js/settings.js"></script>
+</body>
+</html>

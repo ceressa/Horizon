@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2025-11-10T07:58:24.333Z",
+    "level": "AUTH",
+    "event": "LOGIN_SUCCESS",
+    "user": "3723002",
+    "success": true,
+    "message": "User 3723002 logged in successfully",
+    "data": null,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    "browserLanguage": "en",
+    "platform": "Win32",
+    "screenResolution": "1920x1080",
+    "timezone": "Europe/Istanbul",
+    "referrer": "https://tr.eu.fedex.com/Horizon/pages/assets.html",
+    "pageUrl": "/Horizon/pages/login.html",
+    "sessionId": "sess_1762761504334_3g3ivy8gc",
+    "sessionDuration": null,
+    "ipAddress": "10.45.69.13",
+    "serverTimestamp": "2025-11-10T07:58:14Z"
+  }
+]

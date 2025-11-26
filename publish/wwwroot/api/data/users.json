@@ -1,0 +1,77 @@
+{
+  "users": [
+    {
+      "fedexId": "MJ",
+      "name": "Marcel Janzen",
+      "role": "IT_MANAGER",
+      "countries": ["ES", "PT"],
+      "passwordHash": "aa7ba0171a727e8ddb5d5661319b1fa8352fafa52541566cbedd8bdc7fed35ed",
+      "mustChangePassword": true,
+      "email": "marcel.janzen@fedex.com",
+      "lastLogin": null,
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z"
+    },
+    {
+      "fedexId": "FB",
+      "name": "Filip Baumruk",
+      "role": "IT_MANAGER",
+      "countries": ["AT", "CH", "CZ", "HU", "RO", "SK"],
+      "passwordHash": "aa7ba0171a727e8ddb5d5661319b1fa8352fafa52541566cbedd8bdc7fed35ed",
+      "mustChangePassword": true,
+      "email": "filip.baumruk@fedex.com",
+      "lastLogin": null,
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z"
+    },
+    {
+      "fedexId": "GK",
+      "name": "Güliz Ketenci",
+      "role": "IT_MANAGER",
+      "countries": ["TR", "BG", "GR", "SI", "CY", "GSP"],
+      "passwordHash": "aa7ba0171a727e8ddb5d5661319b1fa8352fafa52541566cbedd8bdc7fed35ed",
+      "mustChangePassword": true,
+      "email": "guliz.ketenci@fedex.com",
+      "lastLogin": null,
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z"
+    },
+    {
+      "fedexId": "3723002",
+      "name": "Ufuk Celikeloglu",
+      "role": "ADMIN",
+      "countries": ["TR", "BG", "GR", "SI", "CY", "GSP", "ES", "PT", "AT", "CH", "CZ", "HU", "RO", "SK"],
+      "passwordHash": "aa7ba0171a727e8ddb5d5661319b1fa8352fafa52541566cbedd8bdc7fed35ed",
+      "mustChangePassword": true,
+      "email": "ufuk.celikeloglu@fedex.com",
+      "lastLogin": null,
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z"
+    },
+    {
+      "fedexId": "KC",
+      "name": "Kadriye Ceran",
+      "role": "ADMIN",
+      "countries": ["TR", "ES"],
+      "passwordHash": "aa7ba0171a727e8ddb5d5661319b1fa8352fafa52541566cbedd8bdc7fed35ed",
+      "mustChangePassword": true,
+      "email": "ufuk.celikeloglu@fedex.com",
+      "lastLogin": null,
+      "createdAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-15T10:00:00Z"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-10-03T10:00:00Z",
+    "totalUsers": 4,
+    "defaultPassword": "FedEx2025",
+    "passwordPolicy": {
+      "minLength": 8,
+      "requireNumbers": true,
+      "requireSpecialChars": true,
+      "requireUpperCase": true,
+      "requireLowerCase": true
+    }
+  }
+}

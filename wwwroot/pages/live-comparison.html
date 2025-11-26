@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Comparison - HORIZON</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/live-comparison.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Twemoji -->
+    <script src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"></script>
+</head>
+
+<body data-theme="dark">
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav-container">
+            <!-- Logo Section -->
+            <div class="logo-section" onclick="window.location.href='../index.html';" style="cursor:pointer" title="Go to Dashboard">
+                <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs-container">
+                <div class="nav-tabs">
+                    <!-- Overview -->
+                    <a href="../index.html" class="nav-tab">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="nav-tab-text">Overview</span>
+                    </a>
+                    
+                    <!-- Organization Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="organization">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-tab-text">Organization</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="team.html" class="hz-dropdown-link">
+                                <i class="fas fa-user-group"></i>
+                                <span>Teams</span>
+                            </a>
+                            <a href="locations.html" class="hz-dropdown-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <span>Locations</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Infrastructure Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="infrastructure">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-server"></i>
+                            <span class="nav-tab-text">Infrastructure</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="assets.html" class="hz-dropdown-link">
+                                <i class="fas fa-database"></i>
+                                <span>Assets</span>
+                            </a>
+                            <a href="apps.html" class="hz-dropdown-link">
+                                <i class="fas fa-cubes"></i>
+                                <span>Apps</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Financials Dropdown -->
+                    <div class="hz-dropdown" data-dropdown="financials">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-chart-pie"></i>
+                            <span class="nav-tab-text">Financials</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="projects.html" class="hz-dropdown-link">
+                                <i class="fas fa-project-diagram"></i>
+                                <span>Projects</span>
+                            </a>
+                            <a href="contracts.html" class="hz-dropdown-link">
+                                <i class="fas fa-file-contract"></i>
+                                <span>Contracts</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Reports Dropdown -->
+                    <div class="hz-dropdown active" data-dropdown="reports">
+                        <span class="hz-dropdown-trigger">
+                            <i class="fas fa-file-chart-line"></i>
+                            <span class="nav-tab-text">Reports</span>
+                            <i class="fas fa-chevron-down hz-arrow"></i>
+                        </span>
+                        <div class="hz-dropdown-panel">
+                            <a href="live-comparison.html" class="hz-dropdown-link active">
+                                <i class="fas fa-exchange-alt"></i>
+                                <span>Live Comparison</span>
+                            </a>
+                            <a href="executive-summary.html" class="hz-dropdown-link">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Executive Summary</span>
+                            </a>
+                            <a href="coming_soon.html" class="hz-dropdown-link">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Asset Reports</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Right Side -->
+            <div class="header-right">
+                <!-- Live Clock with Timezone -->
+                <div class="live-clock" id="liveClockContainer">
+                    <div class="clock-time" id="liveClock">--:--:--</div>
+                    <div class="clock-date" id="liveDate">Loading...</div>
+                    <div class="clock-timezone" id="clockTimezone">
+                        <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                        <span id="timezoneCode">TR</span>
+                    </div>
+                </div>
+
+                <!-- User Menu Dropdown -->
+                <div class="user-menu-dropdown">
+                    <div class="user-avatar" id="userAvatar">
+                        <span id="userInitials">--</span>
+                    </div>
+                    
+                    <!-- User Dropdown Panel -->
+                    <div class="user-dropdown-panel">
+                        <div class="user-dropdown-header">
+                            <div class="user-dropdown-avatar">
+                                <span id="userInitialsDropdown">--</span>
+                            </div>
+                            <div class="user-dropdown-info">
+                                <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                                <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                            </div>
+                        </div>
+                        
+                        <div class="user-dropdown-divider"></div>
+                        
+                        <a href="profile.html" class="user-dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </a>
+                        
+                        <a href="settings.html" class="user-dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        
+                        <div class="user-dropdown-divider"></div>
+                        
+                        <button class="user-dropdown-item logout-item" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title-section">
+                <h1 class="page-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Live Country Comparison
+                </h1>
+                <p class="page-subtitle">Compare real-time infrastructure metrics between countries</p>
+            </div>
+        </div>
+
+        <!-- Comparison Setup -->
+        <div class="comparison-setup">
+            <div class="setup-card glass-morphism">
+                <h2 class="setup-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Select Countries to Compare
+                </h2>
+
+                <!-- Country Selection -->
+                <div class="country-selection">
+                    <!-- Country 1 -->
+                    <div class="country-select-group">
+                        <label class="select-label">
+                            <i class="fas fa-flag"></i>
+                            Please choose a country
+                        </label>
+                        
+                        <!-- Loading Skeleton -->
+                        <div class="flag-grid-loading" id="country1Loading">
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                        </div>
+                        
+                        <!-- Flag Grid -->
+                        <div class="flag-grid" id="country1Grid" style="display: grid;">
+                            <!-- Flags will be loaded dynamically -->
+                        </div>
+                        
+                        <!-- Selected Country Display -->
+                        <div class="selected-country-display" id="selectedCountry1" style="display: none;">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- VS Divider -->
+                    <div class="vs-divider">
+                        <span class="vs-text">VS</span>
+                    </div>
+
+                    <!-- Country 2 -->
+                    <div class="country-select-group">
+                        <label class="select-label">
+                            <i class="fas fa-flag"></i>
+                            Please choose a country
+                        </label>
+                        
+                        <!-- Loading Skeleton -->
+                        <div class="flag-grid-loading" id="country2Loading">
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                            <div class="skeleton-flag"></div>
+                        </div>
+                        
+                        <!-- Flag Grid -->
+                        <div class="flag-grid" id="country2Grid" style="display: grid;">
+                            <!-- Flags will be loaded dynamically -->
+                        </div>
+                        
+                        <!-- Selected Country Display -->
+                        <div class="selected-country-display" id="selectedCountry2" style="display: none;">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="compare-btn" id="compareBtn" disabled>
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Compare Countries</span>
+                    </button>
+                    <button class="reset-btn" id="resetBtn">
+                        <i class="fas fa-redo"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="comparison-disclaimer">
+                    <i class="fas fa-info-circle"></i>
+                    <p>
+                        <strong>Note:</strong> This comparison tool uses real-time asset data for infrastructure analysis. 
+                        The data is intended for operational planning and resource allocation across regions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+            
+            <!-- SECTION 1: Overview Cards -->
+            <div id="overviewSection" class="overview-section">
+                <!-- Will be populated by JS -->
+            </div>
+
+            <!-- SECTION 2: Winner Cards -->
+            <div id="winnerSection" class="winner-section">
+                <!-- Will be populated by JS -->
+            </div>
+
+            <!-- SECTION 3: Category Analysis -->
+            <div class="category-analysis-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Asset Category Distribution
+                </h2>
+                
+                <!-- Donut Charts -->
+                <div class="donut-charts-grid">
+                    <div class="chart-container">
+                        <canvas id="donutChart1"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="donutChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: Detailed Tables -->
+            <div id="detailedTables" class="detailed-tables-section">
+                <!-- Will be populated by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p class="footer-credit">
+                Developed with passion by <span class="developer-name">Ufuk Celikeloglu</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="../js/logs.js"></script>
+    <script src="../js/auth-service.js"></script>
+    <script src="../js/auth-guard.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/countries.js"></script>
+    <script src="../js/live-comparison.js"></script>
+</body>
+</html>
