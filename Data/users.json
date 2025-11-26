@@ -168,7 +168,7 @@
         "timezoneFlagCode": "tr"
       },
       "loginCount": 21,
-      "totalTimeSpent": 216302,
+      "totalTimeSpent": 224596,
       "coffeeCount": 0,
       "lastCoffeeDate": null,
       "maxCoffeeCount": 0,
@@ -180,7 +180,7 @@
       "lockedUntil": null,
       "lastFailedAttempt": null,
       "createdAt": "2025-10-20T10:00:00Z",
-      "updatedAt": "2025-11-26T11:15:46.0053919Z"
+      "updatedAt": "2025-11-26T13:35:45.4259815Z"
     },
     {
       "fedexId": "NO",

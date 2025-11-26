@@ -167,20 +167,20 @@
         "timezoneCode": "TR",
         "timezoneFlagCode": "tr"
       },
-      "loginCount": 20,
-      "totalTimeSpent": 208634,
+      "loginCount": 21,
+      "totalTimeSpent": 222756,
       "coffeeCount": 0,
       "lastCoffeeDate": null,
       "maxCoffeeCount": 0,
       "maxCoffeeDay": null,
       "mustChangePassword": false,
-      "lastLogin": "2025-11-26T05:45:08.6618949Z",
+      "lastLogin": "2025-11-26T08:52:05.3945893Z",
       "passwordChangedAt": "2025-10-21T05:16:30.0786131Z",
       "failedAttempts": 0,
       "lockedUntil": null,
       "lastFailedAttempt": null,
       "createdAt": "2025-10-20T10:00:00Z",
-      "updatedAt": "2025-11-26T08:44:01.4661613Z"
+      "updatedAt": "2025-11-26T13:04:57.4806416Z"
     },
     {
       "fedexId": "NO",

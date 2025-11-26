@@ -38,5 +38,48 @@
     "sessionDuration": null,
     "ipAddress": "10.206.63.226",
     "serverTimestamp": "2025-11-26T05:45:08Z"
+  },
+  {
+    "timestamp": "2025-11-26T08:52:14.459Z",
+    "level": "SECURITY",
+    "event": "UNAUTHORIZED_ACCESS",
+    "user": "anonymous",
+    "success": false,
+    "message": "Unauthorized access attempt to /Horizon/index.html",
+    "data": {
+      "attemptedResource": "/Horizon/index.html",
+      "userRole": "unknown"
+    },
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "browserLanguage": "en",
+    "platform": "Win32",
+    "screenResolution": "1920x1080",
+    "timezone": "Europe/Istanbul",
+    "referrer": "https://tr.eu.fedex.com/Horizon/pages/login.html",
+    "pageUrl": "/Horizon/index.html",
+    "sessionId": "sess_1764147134459_85zee1gaf",
+    "sessionDuration": null,
+    "ipAddress": "10.206.63.226",
+    "serverTimestamp": "2025-11-26T08:51:58Z"
+  },
+  {
+    "timestamp": "2025-11-26T08:52:21.585Z",
+    "level": "AUTH",
+    "event": "LOGIN_SUCCESS",
+    "user": "3723002",
+    "success": true,
+    "message": "User 3723002 logged in successfully",
+    "data": null,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+    "browserLanguage": "en",
+    "platform": "Win32",
+    "screenResolution": "1920x1080",
+    "timezone": "Europe/Istanbul",
+    "referrer": "https://tr.eu.fedex.com/Horizon/index.html",
+    "pageUrl": "/Horizon/pages/login.html",
+    "sessionId": "sess_1764147134459_85zee1gaf",
+    "sessionDuration": null,
+    "ipAddress": "10.206.63.226",
+    "serverTimestamp": "2025-11-26T08:52:05Z"
   }
 ]
