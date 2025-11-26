@@ -120,15 +120,15 @@ namespace Horizon.Controllers
         {
             try
             {
-                var filePath = Path.Combine(_environment.WebRootPath, "api", "data", "inventory.json");
-                
+                var apiDataDir = Path.Combine(_environment.WebRootPath, "api", "data");
+                var filePath = Path.Combine(apiDataDir, "inventory.json");
+
                 if (!System.IO.File.Exists(filePath))
                 {
-                    var dataDir = Path.Combine(_environment.WebRootPath, "data");
-                    if (!Directory.Exists(dataDir))
+                    if (!Directory.Exists(apiDataDir))
                     {
-                        Directory.CreateDirectory(dataDir);
-                        _logger.LogWarning("Created missing 'data' directory at {DataDir}", dataDir);
+                        Directory.CreateDirectory(apiDataDir);
+                        _logger.LogWarning("Created missing 'api/data' directory at {DataDir}", apiDataDir);
                     }
 
                     _logger.LogWarning("Inventory file not found at {FilePath}", filePath);
@@ -564,7 +564,7 @@ namespace Horizon.Controllers
 
             var normalized = countryName.Trim();
             if (normalized.Equals("Turkey", StringComparison.OrdinalIgnoreCase) ||
-                normalized.Equals("Türkiye", StringComparison.OrdinalIgnoreCase))
+                normalized.Equals("TÃ¼rkiye", StringComparison.OrdinalIgnoreCase))
                 return "TR";
 
             var countryMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -620,14 +620,14 @@ namespace Horizon.Controllers
         {
             try
             {
-                var dataDir = Path.Combine(_environment.WebRootPath, "data");
-                if (!Directory.Exists(dataDir))
+                var apiDataDir = Path.Combine(_environment.WebRootPath, "api", "data");
+                if (!Directory.Exists(apiDataDir))
                 {
-                    Directory.CreateDirectory(dataDir);
-                    _logger.LogInformation("Created data directory at {DataDir}", dataDir);
+                    Directory.CreateDirectory(apiDataDir);
+                    _logger.LogInformation("Created api/data directory at {DataDir}", apiDataDir);
                 }
 
-                var filePath = Path.Combine(dataDir, "inventory.json");
+                var filePath = Path.Combine(apiDataDir, "inventory.json");
 
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 var json = JsonSerializer.Serialize(data, options);
