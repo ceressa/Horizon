@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using Horizon.Services;
 
 // ========== SERILOG SETUP ==========
 Log.Logger = new LoggerConfiguration()
@@ -24,6 +25,7 @@ try
     // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddHostedService<DataSyncService>();
 
     // ========== JWT AUTHENTICATION ==========
     var key = Encoding.UTF8.GetBytes("HorizonSecretKey_ChangeThis!"); // Backend ile aynı key
