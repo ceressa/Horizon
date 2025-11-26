@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
+using Horizon.Services;
 
 // ========== SERILOG SETUP ==========
+var logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
+Directory.CreateDirectory(logDirectory);
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information() // Log seviyesi (Debug, Information, Warning, Error, Fatal)
+    .WriteTo.Console()
     .WriteTo.File(
-        path: "Logs/horizon-.log",
+        path: Path.Combine(logDirectory, "horizon-.log"),
         rollingInterval: RollingInterval.Day, // Günlük dosya rotasyonu
         retainedFileCountLimit: 14, // Son 14 günün loglarını sakla
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+        shared: true
     )
     .CreateLogger();
 
@@ -24,6 +30,10 @@ try
     // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.Configure<DataSyncOptions>(builder.Configuration.GetSection("DataSync"));
+    builder.Services.AddSingleton<DataSyncService>();
+    builder.Services.AddSingleton<IDataSyncService>(sp => sp.GetRequiredService<DataSyncService>());
+    builder.Services.AddHostedService(sp => sp.GetRequiredService<DataSyncService>());
 
     // ========== JWT AUTHENTICATION ==========
     var key = Encoding.UTF8.GetBytes("HorizonSecretKey_ChangeThis!"); // Backend ile aynı key

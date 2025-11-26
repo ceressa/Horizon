@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using ExcelDataReader;
+using Horizon.Services;
 using System.Data;
 using System.Text;
 
@@ -14,22 +15,28 @@ namespace Horizon.Controllers
         private readonly IWebHostEnvironment _environment;
         private readonly string _dataPath;
         private readonly ILogger<DataController> _logger;
+        private readonly IDataSyncService _dataSyncService;
 
-        public DataController(IWebHostEnvironment environment, ILogger<DataController> logger, IConfiguration configuration)
-{
-    _environment = environment;
-    _logger = logger;
-    _dataPath = configuration.GetValue<string>("DataPath")
-                ?? Path.Combine(environment.ContentRootPath, "Data");
+        public DataController(
+            IWebHostEnvironment environment,
+            ILogger<DataController> logger,
+            IConfiguration configuration,
+            IDataSyncService dataSyncService)
+        {
+            _environment = environment;
+            _logger = logger;
+            _dataSyncService = dataSyncService;
+            _dataPath = configuration.GetValue<string>("DataPath")
+                        ?? Path.Combine(environment.ContentRootPath, "Data");
 
-    Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-    if (!Directory.Exists(_dataPath))
-    {
-        Directory.CreateDirectory(_dataPath);
-        _logger.LogInformation("Data directory created at: {DataPath}", _dataPath);
-    }
-}
+            if (!Directory.Exists(_dataPath))
+            {
+                Directory.CreateDirectory(_dataPath);
+                _logger.LogInformation("Data directory created at: {DataPath}", _dataPath);
+            }
+        }
 
 
         // ============================================================
@@ -43,7 +50,7 @@ namespace Horizon.Controllers
                 .Replace(" ", "_")
                 .Replace("-", "_")
                 .Replace(".", "_")
-				.TrimEnd('_');;
+                                .TrimEnd('_');
 
         }
 
@@ -102,13 +109,38 @@ namespace Horizon.Controllers
         private async Task<string> ReadJsonFile(string fileName)
         {
             var filePath = Path.Combine(_dataPath, fileName);
-            
+
             if (!System.IO.File.Exists(filePath))
             {
                 throw new FileNotFoundException($"JSON file not found: {fileName}");
             }
 
             return await System.IO.File.ReadAllTextAsync(filePath);
+        }
+
+        // ============================================================
+        // DATA SYNC ENDPOINT
+        // ============================================================
+
+        [HttpPost("sync")]
+        public async Task<IActionResult> TriggerSync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Manual data sync requested.");
+                await _dataSyncService.TriggerSyncAsync(cancellationToken);
+                return Ok(new { message = "Data sync triggered." });
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogWarning("Manual data sync request was cancelled.");
+                return StatusCode(499, new { error = "Data sync cancelled" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Manual data sync failed.");
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // ============================================================
