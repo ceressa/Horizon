@@ -25,6 +25,10 @@ try
     // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.Configure<DataSyncOptions>(builder.Configuration.GetSection("DataSync"));
+    builder.Services.AddSingleton<DataSyncService>();
+    builder.Services.AddSingleton<IDataSyncService>(sp => sp.GetRequiredService<DataSyncService>());
+    builder.Services.AddHostedService(sp => sp.GetRequiredService<DataSyncService>());
     builder.Services.AddHostedService<DataSyncService>();
 
     // ========== JWT AUTHENTICATION ==========
