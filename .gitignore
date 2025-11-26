@@ -1,0 +1,37 @@
+# Build artifacts
+bin/
+obj/
+publish/
+**/publish/
+
+# User-specific IDE settings
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and diagnostics
+Logs/
+*.log
+*.deploy.log
+
+# Local packages and caches
+packages/
+.nuget/
+*.nupkg
+
+# Environment and secrets
+appsettings.*.local.json
+appsettings.Development.local.json
+
+# Runtime data files
+wwwroot/api/data/
+wwwroot/data/
+Data/*.xlsx
+Data/*.csv
+
+# OS-generated files
+.DS_Store
+Thumbs.db
