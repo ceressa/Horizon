@@ -5,13 +5,18 @@ using System.Text;
 using Horizon.Services;
 
 // ========== SERILOG SETUP ==========
+var logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
+Directory.CreateDirectory(logDirectory);
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information() // Log seviyesi (Debug, Information, Warning, Error, Fatal)
+    .WriteTo.Console()
     .WriteTo.File(
-        path: "Logs/horizon-.log",
+        path: Path.Combine(logDirectory, "horizon-.log"),
         rollingInterval: RollingInterval.Day, // Günlük dosya rotasyonu
         retainedFileCountLimit: 14, // Son 14 günün loglarını sakla
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+        shared: true
     )
     .CreateLogger();
 

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 namespace Horizon.Services;
 
 public class DataSyncService : IHostedService, IDataSyncService, IDisposable
-
 namespace Horizon.Services;
 
 public class DataSyncService : IHostedService, IDisposable
@@ -38,6 +37,7 @@ public class DataSyncService : IHostedService, IDisposable
             .Select(Path.GetFileName)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList() ?? new List<string>();
+
     private Timer? _timer;
 
     private static readonly TimeSpan SyncTime = new(17, 0, 0); // 17:00 every day
@@ -60,6 +60,7 @@ public class DataSyncService : IHostedService, IDisposable
 
         _ = TriggerSyncInternalAsync("startup", cancellationToken);
         StartTimer();
+
         _logger.LogInformation("DataSyncService starting. Source: {Source}, Target: {Target}", _sourcePath, _targetPath);
 
         _ = CopyDataAsync(cancellationToken);
@@ -122,6 +123,7 @@ public class DataSyncService : IHostedService, IDisposable
         finally
         {
             _syncLock.Release();
+
     private void ScheduleNextRun()
     {
         var now = DateTime.Now;
@@ -173,6 +175,7 @@ public class DataSyncService : IHostedService, IDisposable
             _logger.LogWarning("No Excel files found to copy from {SourcePath}.", _sourcePath);
             return;
         }
+
         var files = Directory.GetFiles(_sourcePath, "*.xlsx", SearchOption.TopDirectoryOnly);
 
         foreach (var file in files)
