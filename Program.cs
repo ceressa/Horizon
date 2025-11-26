@@ -34,6 +34,7 @@ try
     builder.Services.AddSingleton<DataSyncService>();
     builder.Services.AddSingleton<IDataSyncService>(sp => sp.GetRequiredService<DataSyncService>());
     builder.Services.AddHostedService(sp => sp.GetRequiredService<DataSyncService>());
+    builder.Services.AddHostedService<DataSyncService>();
 
     // ========== JWT AUTHENTICATION ==========
     var key = Encoding.UTF8.GetBytes("HorizonSecretKey_ChangeThis!"); // Backend ile aynı key
