@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,11 +16,16 @@ namespace Horizon.Services
         private readonly string _sourcePath;
         private readonly string _targetPath;
         private readonly List<string> _fileNames;
+        private readonly SemaphoreSlim _syncLock = new SemaphoreSlim(1, 1);
+        private static readonly TimeSpan SyncInterval = TimeSpan.FromHours(1);
+
+        private Timer? _timer;
+
         private readonly SemaphoreSlim _syncLock = new(1, 1);
         private Timer? _timer;
 
         private static readonly TimeSpan SyncInterval = TimeSpan.FromHours(1);
-
+        
         public DataSyncService(
             IOptions<DataSyncOptions> options,
             IWebHostEnvironment environment,
@@ -38,6 +49,11 @@ namespace Horizon.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation(
+                "DataSyncService starting. Source: {Source}, Target: {Target}, Interval: {Interval}",
+                _sourcePath,
+                _targetPath,
+                SyncInterval);
             _logger.LogInformation("DataSyncService starting. Source: {Source}, Target: {Target}, Interval: {Interval}",
                 _sourcePath, _targetPath, SyncInterval);
 
@@ -57,6 +73,7 @@ namespace Horizon.Services
         public void Dispose()
         {
             _timer?.Dispose();
+            _syncLock.Dispose();
         }
 
         private void StartTimer()
@@ -66,6 +83,10 @@ namespace Horizon.Services
             _logger.LogInformation("Recurring data sync timer started. Next run at ~{NextRun}.", DateTime.Now + SyncInterval);
         }
 
+
+        private Task RunScheduledSyncAsync()
+        {
+            return TriggerSyncInternalAsync("scheduled");
         private async Task RunScheduledSyncAsync()
         {
             await TriggerSyncInternalAsync("scheduled");
@@ -78,6 +99,7 @@ namespace Horizon.Services
 
         private async Task TriggerSyncInternalAsync(string reason, CancellationToken cancellationToken = default)
         {
+            if (!await _syncLock.WaitAsync(0, cancellationToken).ConfigureAwait(false))
             if (!await _syncLock.WaitAsync(0, cancellationToken))
             {
                 _logger.LogWarning("Data sync skipped ({Reason}) because a sync is already in progress.", reason);
@@ -87,6 +109,7 @@ namespace Horizon.Services
             try
             {
                 _logger.LogInformation("Starting data sync ({Reason}).", reason);
+                await CopyDataAsync(cancellationToken).ConfigureAwait(false);
                 await CopyDataAsync(cancellationToken);
                 _logger.LogInformation("Data sync completed ({Reason}).", reason);
             }
@@ -131,6 +154,11 @@ namespace Horizon.Services
 
                 try
                 {
+                    using (var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var destinationStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    {
+                        await sourceStream.CopyToAsync(destinationStream, cancellationToken).ConfigureAwait(false);
+                    }
                     using var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     using var destinationStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.Read);
                     await sourceStream.CopyToAsync(destinationStream, cancellationToken);
@@ -169,6 +197,7 @@ namespace Horizon.Services
 
             return resolved;
         }
+
 namespace Horizon.Services;
 
 public class DataSyncService : IHostedService, IDataSyncService, IDisposable
