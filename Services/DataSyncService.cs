@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,6 +84,9 @@ namespace Horizon.Services
             _logger.LogInformation("Recurring data sync timer started. Next run at ~{NextRun}.", DateTime.Now + SyncInterval);
         }
 
+        private Task RunScheduledSyncAsync()
+        {
+            return TriggerSyncInternalAsync("scheduled");
 
         private Task RunScheduledSyncAsync()
         {
