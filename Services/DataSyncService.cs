@@ -11,6 +11,10 @@ using Microsoft.Extensions.Options;
 
 namespace Horizon.Services
 {
+    /// <summary>
+    /// Copies Excel files from the ServiceNow drop folder into the publish data folder.
+    /// Runs hourly and can also be triggered manually.
+    /// </summary>
     public class DataSyncService : IHostedService, IDataSyncService, IDisposable
     {
         private readonly ILogger<DataSyncService> _logger;
@@ -22,6 +26,7 @@ namespace Horizon.Services
 
         private Timer? _timer;
 
+        public DataSyncService(IOptions<DataSyncOptions> options, IWebHostEnvironment environment, ILogger<DataSyncService> logger)
         private readonly SemaphoreSlim _syncLock = new(1, 1);
         private Timer? _timer;
 
@@ -35,6 +40,10 @@ namespace Horizon.Services
             _logger = logger;
 
             var syncOptions = options.Value ?? new DataSyncOptions();
+            _sourcePath = syncOptions.SourcePath ?? Path.Combine(environment.ContentRootPath, "Data");
+            _targetPath = syncOptions.TargetPath ?? Path.Combine(environment.ContentRootPath, "publish", "Data");
+            _fileNames = syncOptions.FileNames?
+                .Where(name => !string.IsNullOrWhiteSpace(name))
 
             _sourcePath = syncOptions.SourcePath
                 ?? Path.Combine(environment.ContentRootPath, "Data");
@@ -50,6 +59,9 @@ namespace Horizon.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("DataSyncService starting. Source: {Source}, Target: {Target}, Interval: {Interval}", _sourcePath, _targetPath, SyncInterval);
+            _ = TriggerSyncInternalAsync("startup", cancellationToken);
+            StartTimer();
             _logger.LogInformation(
                 "DataSyncService starting. Source: {Source}, Target: {Target}, Interval: {Interval}",
                 _sourcePath,
@@ -75,6 +87,11 @@ namespace Horizon.Services
         {
             _timer?.Dispose();
             _syncLock.Dispose();
+        }
+
+        public Task TriggerSyncAsync(CancellationToken cancellationToken = default)
+        {
+            return TriggerSyncInternalAsync("manual", cancellationToken);
         }
 
         private void StartTimer()

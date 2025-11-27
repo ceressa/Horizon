@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Horizon.Services
 {
     public class DataSyncOptions
