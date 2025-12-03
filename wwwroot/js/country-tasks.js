@@ -16,8 +16,8 @@ let modalFilters = {
     assignee: 'all'
 };
 
-// Only show these European countries (exclude UK, US, etc.)
-const ALLOWED_COUNTRIES = ['TR', 'ES', 'PT', 'CH', 'CZ', 'AT', 'RO', 'HU', 'GR', 'BG', 'SK', 'SI', 'CY'];
+// Exclude UK and US, show all other countries
+const EXCLUDED_COUNTRIES = ['GB', 'UK', 'US', 'USA'];
 
 const COUNTRY_NAMES = {
     'TR': 'Turkey',
@@ -106,8 +106,12 @@ async function initializeCountryTasks() {
 
         globalData = await summaryResponse.json();
 
-        // Filter to only allowed countries
-        globalData.countries = globalData.countries.filter(c => ALLOWED_COUNTRIES.includes(c.countryCode));
+        // Exclude UK and US, show all other countries
+        globalData.countries = globalData.countries.filter(c =>
+            !EXCLUDED_COUNTRIES.includes(c.countryCode.toUpperCase())
+        );
+
+        console.log(`✅ Filtered to ${globalData.countries.length} countries (excluding UK/US)`);
 
         filteredData = globalData;
 
@@ -195,12 +199,12 @@ async function fetchAllTasks() {
 
         allTasks = await response.json();
 
-        // Filter to only allowed countries
+        // Exclude UK and US, show all other countries
         allTasks = allTasks.filter(task =>
-            task.country_code && ALLOWED_COUNTRIES.includes(task.country_code.toUpperCase())
+            task.country_code && !EXCLUDED_COUNTRIES.includes(task.country_code.toUpperCase())
         );
 
-        console.log(`✅ Loaded ${allTasks.length} tasks from allowed countries`);
+        console.log(`✅ Loaded ${allTasks.length} tasks (excluding UK/US)`);
     } catch (error) {
         console.error('❌ Error fetching all tasks:', error);
 
