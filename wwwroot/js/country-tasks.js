@@ -37,8 +37,25 @@ async function initializeCountryTasks() {
 
         // Fetch data from API
         const response = await fetch('/Horizon/api/data/country-tasks/summary');
+
         if (!response.ok) {
-            throw new Error(`Failed to fetch data: ${response.statusText}`);
+            // Get detailed error from response
+            let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                errorDetails = errorData.error || errorDetails;
+                console.error('API Error Details:', errorData);
+            } catch (e) {
+                const errorText = await response.text();
+                console.error('API Error Response:', errorText);
+            }
+
+            // Log to server
+            if (window.horizonLogger) {
+                window.horizonLogger.logServerError('/api/data/country-tasks/summary', new Error(errorDetails));
+            }
+
+            throw new Error(`Failed to fetch data: ${errorDetails}`);
         }
 
         globalData = await response.json();
@@ -58,7 +75,17 @@ async function initializeCountryTasks() {
         await fetchAllTasks();
 
     } catch (error) {
-        console.error('Error initializing country tasks:', error);
+        console.error('❌ Error initializing country tasks:', error);
+        console.error('Stack trace:', error.stack);
+
+        // Log to server
+        if (window.horizonLogger) {
+            window.horizonLogger.logError('COUNTRY_TASKS_INIT_ERROR', error.message, {
+                endpoint: '/api/data/country-tasks/summary',
+                stack: error.stack
+            });
+        }
+
         showError(error.message);
     }
 }
@@ -67,13 +94,39 @@ async function initializeCountryTasks() {
 async function fetchAllTasks() {
     try {
         const response = await fetch('/Horizon/api/data/country-tasks');
+
         if (!response.ok) {
-            throw new Error(`Failed to fetch tasks: ${response.statusText}`);
+            // Get detailed error from response
+            let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                errorDetails = errorData.error || errorDetails;
+                console.error('API Error Details:', errorData);
+            } catch (e) {
+                const errorText = await response.text();
+                console.error('API Error Response:', errorText);
+            }
+
+            // Log to server
+            if (window.horizonLogger) {
+                window.horizonLogger.logServerError('/api/data/country-tasks', new Error(errorDetails));
+            }
+
+            throw new Error(`Failed to fetch tasks: ${errorDetails}`);
         }
+
         allTasks = await response.json();
         console.log('All tasks loaded:', allTasks.length);
     } catch (error) {
         console.error('Error fetching all tasks:', error);
+
+        // Log to server
+        if (window.horizonLogger) {
+            window.horizonLogger.logError('FETCH_TASKS_ERROR', error.message, {
+                endpoint: '/api/data/country-tasks',
+                stack: error.stack
+            });
+        }
     }
 }
 
@@ -474,14 +527,45 @@ function showError(message) {
     const container = document.getElementById('countriesContainer');
     if (!container) return;
 
+    // Also show in global stats container
+    const statsContainer = document.getElementById('globalStatsContainer');
+    if (statsContainer) {
+        statsContainer.innerHTML = '';
+    }
+
     container.innerHTML = `
-        <div class="error-container">
+        <div class="error-container" style="grid-column: 1/-1;">
             <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-            <h3>Error Loading Data</h3>
-            <p>${message}</p>
-            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">
-                Retry
-            </button>
+            <h3>⚠️ Error Loading Country Tasks Data</h3>
+            <p style="font-size: 1.1rem; margin: 1rem 0; color: #ef4444; font-weight: 600;">${message}</p>
+            <details style="margin: 1.5rem 0; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                <summary style="cursor: pointer; padding: 0.5rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; margin-bottom: 0.5rem;">
+                    🔍 Click to see technical details
+                </summary>
+                <pre style="background: #1a1a1a; padding: 1rem; border-radius: 8px; overflow-x: auto; text-align: left; font-size: 0.875rem;">
+Endpoint: /Horizon/api/data/country-tasks/summary
+Expected File: Data/Horizon_Tasks.xlsx
+
+Possible causes:
+1. File Horizon_Tasks.xlsx is missing in Data folder
+2. File has incorrect format or corrupted
+3. Backend API error (check server logs)
+4. Permission issues reading the file
+
+Next steps:
+- Open browser DevTools (F12) → Console tab
+- Look for red error messages
+- Copy the full error and share with developer
+- Check if file exists: D:\\INTRANET\\Horizon\\Data\\Horizon_Tasks.xlsx</pre>
+            </details>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                <button onclick="location.reload()" style="padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-redo"></i> Retry
+                </button>
+                <button onclick="window.location.href='/Horizon/'" style="padding: 0.75rem 1.5rem; background: var(--border-color); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    <i class="fas fa-home"></i> Go Home
+                </button>
+            </div>
         </div>
     `;
 }
