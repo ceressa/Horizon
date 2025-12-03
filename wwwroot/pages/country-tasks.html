@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/Horizon/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country IT Tasks - HORIZON</title>
+
+    <link rel="icon" type="image/png" href="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <script src="js/logs.js"></script>
+    <script src="js/auth-service.js"></script>
+    <script src="js/auth-guard.js"></script>
+
+    <style>
+        .country-tasks-container {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .global-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg, #1e1e2e);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color, #2a2a3e);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary, #a0a0b0);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary, #ffffff);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card-subtext {
+            font-size: 0.75rem;
+            color: var(--text-tertiary, #707080);
+        }
+
+        .filters-section {
+            background: var(--card-bg, #1e1e2e);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color, #2a2a3e);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary, #a0a0b0);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            background: var(--input-bg, #2a2a3e);
+            border: 1px solid var(--border-color, #3a3a4e);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text-primary, #ffffff);
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color, #4c6ef5);
+            box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.1);
+        }
+
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .country-card {
+            background: var(--card-bg, #1e1e2e);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color, #2a2a3e);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .country-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color, #4c6ef5);
+        }
+
+        .country-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color, #2a2a3e);
+        }
+
+        .country-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .country-flag {
+            width: 32px;
+            height: 24px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .country-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary, #ffffff);
+        }
+
+        .country-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color, #4c6ef5);
+        }
+
+        .country-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--input-bg, #2a2a3e);
+            border-radius: 6px;
+        }
+
+        .stat-row-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary, #a0a0b0);
+        }
+
+        .stat-row-value {
+            font-weight: 600;
+            color: var(--text-primary, #ffffff);
+        }
+
+        .stat-row-percentage {
+            font-size: 0.75rem;
+            color: var(--text-tertiary, #707080);
+            margin-left: 0.5rem;
+        }
+
+        .priority-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-badge.p5 {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .priority-badge.p4 {
+            background: rgba(249, 115, 22, 0.2);
+            color: #f97316;
+        }
+
+        .priority-badge.p3 {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+        }
+
+        .priority-badge.other {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+
+        .detail-button {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--primary-color, #4c6ef5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-button:hover {
+            background: var(--primary-hover, #3b5bdb);
+            transform: translateY(-2px);
+        }
+
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color, #2a2a3e);
+            border-top-color: var(--primary-color, #4c6ef5);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-container {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            color: #ef4444;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg, #1e1e2e);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color, #2a2a3e);
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary, #a0a0b0);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: var(--input-bg, #2a2a3e);
+            color: var(--text-primary, #ffffff);
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .task-table th {
+            background: var(--input-bg, #2a2a3e);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary, #a0a0b0);
+            border-bottom: 2px solid var(--border-color, #2a2a3e);
+        }
+
+        .task-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color, #2a2a3e);
+            font-size: 0.875rem;
+        }
+
+        .task-table tr:hover {
+            background: var(--input-bg, #2a2a3e);
+        }
+
+        .task-type-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .task-type-badge.incident {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .task-type-badge.request {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .state-badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .state-badge.closed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .state-badge.progress {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+        }
+
+        .state-badge.other {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+    </style>
+</head>
+
+<body data-theme="dark" style="opacity: 0; transition: opacity 0.8s ease;">
+
+<!-- Header Navigation -->
+<header class="header">
+    <nav class="nav-container">
+        <div class="logo-section" onclick="window.location.href='index.html';" style="cursor:pointer" title="Go to Dashboard">
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png" alt="HORIZON Logo" class="horizon-main-logo">
+        </div>
+
+        <div class="nav-tabs-container">
+            <div class="nav-tabs">
+                <a href="index.html" class="nav-tab">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-tab-text">Overview</span>
+                </a>
+
+                <div class="hz-dropdown" data-dropdown="organization">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-tab-text">Organization</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="pages/team.html" class="hz-dropdown-link">
+                            <i class="fas fa-user-group"></i>
+                            <span>Teams</span>
+                        </a>
+                        <a href="pages/locations.html" class="hz-dropdown-link">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Locations</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hz-dropdown" data-dropdown="infrastructure">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-server"></i>
+                        <span class="nav-tab-text">Infrastructure</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="pages/assets.html" class="hz-dropdown-link">
+                            <i class="fas fa-database"></i>
+                            <span>Assets</span>
+                        </a>
+                        <a href="pages/apps.html" class="hz-dropdown-link">
+                            <i class="fas fa-cubes"></i>
+                            <span>Apps</span>
+                        </a>
+                        <a href="pages/stockroom.html" class="hz-dropdown-link">
+                            <i class="fas fa-warehouse"></i>
+                            <span>Stockroom</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hz-dropdown" data-dropdown="financials">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-tab-text">Financials</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="pages/projects.html" class="hz-dropdown-link">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="pages/contracts.html" class="hz-dropdown-link">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Contracts</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hz-dropdown active" data-dropdown="reports">
+                    <span class="hz-dropdown-trigger">
+                        <i class="fas fa-file-chart-line"></i>
+                        <span class="nav-tab-text">Reports</span>
+                        <i class="fas fa-chevron-down hz-arrow"></i>
+                    </span>
+                    <div class="hz-dropdown-panel">
+                        <a href="pages/live-comparison.html" class="hz-dropdown-link">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Live Comparison</span>
+                        </a>
+                        <a href="pages/executive-dashboard.html" class="hz-dropdown-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Executive Summary</span>
+                        </a>
+                        <a href="pages/country-tasks.html" class="hz-dropdown-link active">
+                            <i class="fas fa-tasks"></i>
+                            <span>Country IT Tasks</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="live-clock" id="liveClockContainer">
+                <div class="clock-time" id="liveClock">--:--:--</div>
+                <div class="clock-date" id="liveDate">Loading...</div>
+                <div class="clock-timezone" id="clockTimezone">
+                    <img src="https://flagcdn.com/16x12/tr.png" alt="TR" class="tz-flag-small" id="timezoneFlag">
+                    <span id="timezoneCode">TR</span>
+                </div>
+            </div>
+
+            <div class="timezone-dropdown" id="timezoneDropdown" style="display:none;">
+                <div class="timezone-option" onclick="changeTimezone('Europe/Istanbul', 'TR', 'tr')">
+                    <img src="https://flagcdn.com/20x15/tr.png" alt="TR" class="tz-flag">
+                    <span>Istanbul (Türkiye)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/Berlin', 'CET', 'de')">
+                    <img src="https://flagcdn.com/20x15/de.png" alt="CET" class="tz-flag">
+                    <span>Central Europe</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('Europe/London', 'GMT', 'gb')">
+                    <img src="https://flagcdn.com/20x15/gb.png" alt="GMT" class="tz-flag">
+                    <span>London (UK)</span>
+                </div>
+                <div class="timezone-option" onclick="changeTimezone('America/Chicago', 'CST', 'us')">
+                    <img src="https://flagcdn.com/20x15/us.png" alt="CST" class="tz-flag">
+                    <span>Chicago (USA)</span>
+                </div>
+            </div>
+
+            <div class="user-menu-dropdown">
+                <div class="user-avatar" id="userAvatar">
+                    <span id="userInitials">--</span>
+                </div>
+
+                <div class="user-dropdown-panel">
+                    <div class="user-dropdown-header">
+                        <div class="user-dropdown-avatar">
+                            <span id="userInitialsDropdown">--</span>
+                        </div>
+                        <div class="user-dropdown-info">
+                            <div class="user-dropdown-name" id="userDropdownName">Loading...</div>
+                            <div class="user-dropdown-email" id="userDropdownEmail">user@fedex.com</div>
+                        </div>
+                    </div>
+
+                    <div class="user-dropdown-divider"></div>
+
+                    <a href="pages/profile.html" class="user-dropdown-item">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+
+                    <a href="pages/settings.html" class="user-dropdown-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+
+                    <div class="user-dropdown-divider"></div>
+
+                    <button class="user-dropdown-item logout-item" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Page Loader -->
+<div id="universalPageLoader" class="universal-page-loader">
+    <div class="loader-content">
+        <div class="loader-logo-container">
+            <div class="loader-ring"></div>
+            <img src="https://tr.eu.fedex.com/Horizon/images/horizon_logo_new.png"
+                 alt="HORIZON"
+                 class="loader-logo">
+        </div>
+        <p class="loader-text">Loading Country Tasks...</p>
+        <div class="loader-progress">
+            <div class="loader-progress-fill"></div>
+        </div>
+        <div class="loader-progress-text">0%</div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="country-tasks-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-tasks"></i>
+                Country IT Tasks Analysis
+            </h1>
+            <p class="page-subtitle">Incident (INC) and Service Request (SCTASK) tracking across all regions</p>
+        </div>
+
+        <!-- Global Stats -->
+        <div id="globalStatsContainer" class="global-stats-grid">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <h3 style="margin-bottom: 1rem; color: var(--text-primary);">
+                <i class="fas fa-filter"></i> Filters
+            </h3>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Task Type</label>
+                    <select id="filterTaskType" class="filter-select">
+                        <option value="all">All Tasks</option>
+                        <option value="incident">Incidents (INC)</option>
+                        <option value="request">Requests (SCTASK)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select id="filterStatus" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="closed">Closed</option>
+                        <option value="progress">In Progress</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Priority</label>
+                    <select id="filterPriority" class="filter-select">
+                        <option value="all">All Priorities</option>
+                        <option value="5">Priority 5 (Critical)</option>
+                        <option value="4">Priority 4 (High)</option>
+                        <option value="3">Priority 3 (Medium)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Country</label>
+                    <select id="filterCountry" class="filter-select">
+                        <option value="all">All Countries</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Countries Grid -->
+        <div id="countriesContainer" class="countries-grid">
+            <!-- Country cards will be populated by JavaScript -->
+        </div>
+    </div>
+</main>
+
+<!-- Task Detail Modal -->
+<div id="taskDetailModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">
+                <!-- Title will be set by JavaScript -->
+            </div>
+            <button class="close-modal" onclick="closeTaskModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="modalBody">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="logout-modal-overlay" id="logoutModal">
+    <div class="logout-modal-content">
+        <div class="logout-modal-icon">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h3>Confirm Logout</h3>
+        <p>Are you sure you want to logout?</p>
+        <div class="logout-modal-buttons">
+            <button class="logout-btn-cancel" id="cancelLogout">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+            <button class="logout-btn-confirm" id="confirmLogout">
+                <i class="fas fa-check"></i> Logout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/settings.js"></script>
+<script src="js/common.js"></script>
+<script src="js/country-tasks.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const loader = document.getElementById('universalPageLoader');
+    const body = document.body;
+
+    if (typeof showPageLoader === 'function') {
+        showPageLoader('default');
+    }
+    body.style.opacity = '0';
+
+    try {
+        if (!window.authService || !window.authService.isAuthenticated()) {
+            window.location.href = `${window.location.origin}/Horizon/pages/login.html`;
+            return;
+        }
+
+        window.currentUser = window.authService.getCurrentUser();
+
+        // Logout modal listeners
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutModal = document.getElementById('logoutModal');
+        const cancelLogout = document.getElementById('cancelLogout');
+        const confirmLogout = document.getElementById('confirmLogout');
+
+        if (logoutBtn && logoutModal) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logoutModal.classList.add('active');
+            });
+
+            if (cancelLogout) {
+                cancelLogout.addEventListener('click', () => {
+                    logoutModal.classList.remove('active');
+                });
+            }
+
+            if (confirmLogout) {
+                confirmLogout.addEventListener('click', () => {
+                    if (window.authService) {
+                        window.authService.logout();
+                    } else {
+                        window.location.href = '/Horizon/pages/login.html';
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && logoutModal.classList.contains('active')) {
+                    logoutModal.classList.remove('active');
+                }
+            });
+
+            logoutModal.addEventListener('click', (e) => {
+                if (e.target === logoutModal) {
+                    logoutModal.classList.remove('active');
+                }
+            });
+        }
+
+        // Load country tasks data
+        await initializeCountryTasks();
+
+        setTimeout(() => {
+            if (loader) {
+                loader.classList.remove('active');
+                loader.classList.add('fade-out');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 600);
+            }
+            body.style.transition = 'opacity 0.8s ease';
+            body.style.opacity = '1';
+        }, 800);
+
+    } catch (err) {
+        console.error('Page initialization failed:', err);
+        body.style.opacity = '1';
+        if (loader) loader.style.display = 'none';
+    }
+
+    // Clock
+    if (typeof updateLiveClock === 'function') {
+        updateLiveClock();
+        setInterval(updateLiveClock, 60000);
+    }
+});
+</script>
+
+</body>
+</html>
