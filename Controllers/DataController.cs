@@ -57,7 +57,7 @@ namespace Horizon.Controllers
         private List<Dictionary<string, object>> ReadExcelFile(string fileName)
         {
             var filePath = Path.Combine(_dataPath, fileName);
-            
+
             if (!System.IO.File.Exists(filePath))
             {
                 throw new FileNotFoundException($"Excel file not found: {fileName}");
@@ -87,6 +87,7 @@ namespace Horizon.Controllers
                 foreach (DataRow row in table.Rows)
                 {
                     var asset = new Dictionary<string, object>();
+                    var seenKeys = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
                     foreach (DataColumn column in table.Columns)
                     {
@@ -95,6 +96,19 @@ namespace Horizon.Controllers
                             rawName = $"column_{column.Ordinal + 1}";
 
                         string key = NormalizeColumnName(rawName);
+
+                        // Handle duplicate column names (e.g., multiple "Country code" columns)
+                        // For duplicates, use the LAST occurrence
+                        if (seenKeys.ContainsKey(key))
+                        {
+                            seenKeys[key]++;
+                            // Overwrite with latest value - this ensures we use the LAST column
+                        }
+                        else
+                        {
+                            seenKeys[key] = 1;
+                        }
+
                         var value = row[column];
                         asset[key] = value == DBNull.Value ? null : value;
                     }
