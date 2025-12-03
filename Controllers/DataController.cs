@@ -675,5 +675,135 @@ namespace Horizon.Controllers
                 return StatusCode(500, new { success = false, error = ex.Message });
             }
         }
+
+        // ============================================================
+        // COUNTRY TASKS ENDPOINTS (INC & SCTASK Analysis)
+        // ============================================================
+
+        [HttpGet("country-tasks")]
+        public IActionResult GetCountryTasks()
+        {
+            try
+            {
+                var tasks = ReadExcelFile("Horizon_Tasks.xlsx");
+                var json = JsonSerializer.Serialize(tasks);
+                return Content(json, "application/json");
+            }
+            catch (FileNotFoundException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return NotFound(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error reading country tasks Excel file.");
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("country-tasks/summary")]
+        public IActionResult GetCountryTasksSummary()
+        {
+            try
+            {
+                var tasks = ReadExcelFile("Horizon_Tasks.xlsx");
+
+                var totalTasks = tasks.Count;
+                var incidents = tasks.Count(t => t.ContainsKey("number") &&
+                    t["number"]?.ToString()?.StartsWith("INC", StringComparison.OrdinalIgnoreCase) == true);
+                var requests = tasks.Count(t => t.ContainsKey("number") &&
+                    t["number"]?.ToString()?.StartsWith("SCTASK", StringComparison.OrdinalIgnoreCase) == true);
+
+                var closedTasks = tasks.Count(t => t.ContainsKey("state") &&
+                    (t["state"]?.ToString()?.Contains("Closed", StringComparison.OrdinalIgnoreCase) == true));
+
+                var highPriorityTasks = tasks.Count(t => t.ContainsKey("priority") &&
+                    t["priority"]?.ToString() == "5");
+
+                var avgDuration = tasks
+                    .Where(t => t.ContainsKey("business_duration") &&
+                        double.TryParse(t["business_duration"]?.ToString(), out _))
+                    .Select(t => Convert.ToDouble(t["business_duration"]))
+                    .DefaultIfEmpty(0)
+                    .Average();
+
+                var countryGroups = tasks
+                    .Where(t => t.ContainsKey("country_code") && !string.IsNullOrWhiteSpace(t["country_code"]?.ToString()))
+                    .GroupBy(t => t["country_code"]?.ToString() ?? "Unknown")
+                    .Select(g => new
+                    {
+                        countryCode = g.Key,
+                        totalTasks = g.Count(),
+                        incidents = g.Count(t => t.ContainsKey("number") &&
+                            t["number"]?.ToString()?.StartsWith("INC", StringComparison.OrdinalIgnoreCase) == true),
+                        requests = g.Count(t => t.ContainsKey("number") &&
+                            t["number"]?.ToString()?.StartsWith("SCTASK", StringComparison.OrdinalIgnoreCase) == true),
+                        closedTasks = g.Count(t => t.ContainsKey("state") &&
+                            (t["state"]?.ToString()?.Contains("Closed", StringComparison.OrdinalIgnoreCase) == true)),
+                        inProgressTasks = g.Count(t => t.ContainsKey("state") &&
+                            (t["state"]?.ToString()?.Contains("Progress", StringComparison.OrdinalIgnoreCase) == true ||
+                             t["state"]?.ToString()?.Contains("Work in Progress", StringComparison.OrdinalIgnoreCase) == true)),
+                        highPriorityTasks = g.Count(t => t.ContainsKey("priority") &&
+                            t["priority"]?.ToString() == "5"),
+                        avgDuration = g
+                            .Where(t => t.ContainsKey("business_duration") &&
+                                double.TryParse(t["business_duration"]?.ToString(), out _))
+                            .Select(t => Convert.ToDouble(t["business_duration"]))
+                            .DefaultIfEmpty(0)
+                            .Average(),
+                        priorityDistribution = g
+                            .Where(t => t.ContainsKey("priority"))
+                            .GroupBy(t => t["priority"]?.ToString() ?? "Unknown")
+                            .Select(p => new { priority = p.Key, count = p.Count() })
+                            .OrderByDescending(p => p.count),
+                        stateDistribution = g
+                            .Where(t => t.ContainsKey("state"))
+                            .GroupBy(t => t["state"]?.ToString() ?? "Unknown")
+                            .Select(s => new { state = s.Key, count = s.Count() })
+                            .OrderByDescending(s => s.count),
+                        topAssignmentGroups = g
+                            .Where(t => t.ContainsKey("assignment_group") && !string.IsNullOrWhiteSpace(t["assignment_group"]?.ToString()))
+                            .GroupBy(t => t["assignment_group"]?.ToString())
+                            .Select(ag => new { group = ag.Key, count = ag.Count() })
+                            .OrderByDescending(ag => ag.count)
+                            .Take(5),
+                        topAssignees = g
+                            .Where(t => t.ContainsKey("assigned_to") && !string.IsNullOrWhiteSpace(t["assigned_to"]?.ToString()))
+                            .GroupBy(t => t["assigned_to"]?.ToString())
+                            .Select(a => new { assignee = a.Key, count = a.Count() })
+                            .OrderByDescending(a => a.count)
+                            .Take(5)
+                    })
+                    .OrderByDescending(g => g.totalTasks)
+                    .ToList();
+
+                var summary = new
+                {
+                    globalStats = new
+                    {
+                        totalTasks = totalTasks,
+                        incidents = incidents,
+                        requests = requests,
+                        closedTasks = closedTasks,
+                        highPriorityTasks = highPriorityTasks,
+                        avgDurationHours = Math.Round(avgDuration / 3600, 2),
+                        closedPercentage = totalTasks > 0 ? Math.Round((double)closedTasks / totalTasks * 100, 2) : 0
+                    },
+                    countries = countryGroups
+                };
+
+                return Ok(summary);
+            }
+            catch (FileNotFoundException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                return NotFound(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error calculating country tasks summary.");
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
 }
