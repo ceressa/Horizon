@@ -1,9 +1,12 @@
-// Country Tasks Module
-// Handles fetching, filtering, and displaying IT tasks by country
+// ========== COUNTRY TASKS MODULE ========== //
+// Version: 2.0.0 - Complete rewrite with Twemoji, charts, and enhanced features
+
+'use strict';
 
 let globalData = null;
 let filteredData = null;
 let allTasks = [];
+let currentChart = null;
 
 const COUNTRY_NAMES = {
     'TR': 'Turkey',
@@ -30,55 +33,76 @@ const COUNTRY_NAMES = {
     'GB': 'United Kingdom'
 };
 
-// Initialize the country tasks module
+// Country code to emoji flag mapping
+const COUNTRY_EMOJI_FLAGS = {
+    'TR': '🇹🇷', 'ES': '🇪🇸', 'PT': '🇵🇹', 'CH': '🇨🇭',
+    'CZ': '🇨🇿', 'AT': '🇦🇹', 'RO': '🇷🇴', 'HU': '🇭🇺',
+    'GR': '🇬🇷', 'BG': '🇧🇬', 'SK': '🇸🇰', 'BE': '🇧🇪',
+    'DK': '🇩🇰', 'FI': '🇫🇮', 'FR': '🇫🇷', 'DE': '🇩🇪',
+    'IE': '🇮🇪', 'IT': '🇮🇹', 'NL': '🇳🇱', 'PL': '🇵🇱',
+    'SE': '🇸🇪', 'GB': '🇬🇧'
+};
+
+// ========== INITIALIZATION ========== //
+
 async function initializeCountryTasks() {
+    const loader = document.getElementById('universalPageLoader');
+
     try {
-        console.log('Initializing country tasks module...');
+        console.log('🚀 Initializing Country Tasks module...');
 
-        // Fetch data from API
-        const response = await fetch('/Horizon/api/data/country-tasks/summary');
+        // Show loading screen
+        if (loader) loader.classList.add('active');
 
-        if (!response.ok) {
-            // Get detailed error from response
-            let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+        // Fetch summary data
+        const summaryResponse = await fetch('/Horizon/api/data/country-tasks/summary');
+
+        if (!summaryResponse.ok) {
+            let errorDetails = `HTTP ${summaryResponse.status}: ${summaryResponse.statusText}`;
             try {
-                const errorData = await response.json();
+                const errorData = await summaryResponse.json();
                 errorDetails = errorData.error || errorDetails;
-                console.error('API Error Details:', errorData);
+                console.error('❌ API Error Details:', errorData);
             } catch (e) {
-                const errorText = await response.text();
-                console.error('API Error Response:', errorText);
+                const errorText = await summaryResponse.text();
+                console.error('❌ API Error Response:', errorText);
             }
 
-            // Log to server
             if (window.horizonLogger) {
                 window.horizonLogger.logServerError('/api/data/country-tasks/summary', new Error(errorDetails));
             }
 
-            throw new Error(`Failed to fetch data: ${errorDetails}`);
+            throw new Error(`Failed to fetch summary: ${errorDetails}`);
         }
 
-        globalData = await response.json();
+        globalData = await summaryResponse.json();
         filteredData = globalData;
 
-        console.log('Country tasks data loaded:', globalData);
+        console.log('✅ Summary data loaded:', globalData);
 
-        // Render components
+        // Fetch all tasks for details and charts
+        await fetchAllTasks();
+
+        // Render UI components
         renderGlobalStats(globalData.globalStats);
         renderCountryCards(globalData.countries);
         populateCountryFilter(globalData.countries);
+        populateAssignmentGroupFilter();
 
-        // Setup filter listeners
+        // Setup event listeners
         setupFilterListeners();
 
-        // Fetch all tasks for detail view
-        await fetchAllTasks();
+        // Apply Twemoji to all rendered content
+        if (window.twemoji) {
+            twemoji.parse(document.body);
+        }
+
+        console.log('✅ Country Tasks module initialized successfully');
 
     } catch (error) {
         console.error('❌ Error initializing country tasks:', error);
         console.error('Stack trace:', error.stack);
 
-        // Log to server
         if (window.horizonLogger) {
             window.horizonLogger.logError('COUNTRY_TASKS_INIT_ERROR', error.message, {
                 endpoint: '/api/data/country-tasks/summary',
@@ -87,27 +111,30 @@ async function initializeCountryTasks() {
         }
 
         showError(error.message);
+    } finally {
+        // Hide loading screen
+        if (loader) {
+            setTimeout(() => loader.classList.remove('active'), 500);
+        }
     }
 }
 
-// Fetch all tasks for detail modal
+// ========== FETCH ALL TASKS ========== //
+
 async function fetchAllTasks() {
     try {
         const response = await fetch('/Horizon/api/data/country-tasks');
 
         if (!response.ok) {
-            // Get detailed error from response
             let errorDetails = `HTTP ${response.status}: ${response.statusText}`;
             try {
                 const errorData = await response.json();
                 errorDetails = errorData.error || errorDetails;
-                console.error('API Error Details:', errorData);
             } catch (e) {
                 const errorText = await response.text();
                 console.error('API Error Response:', errorText);
             }
 
-            // Log to server
             if (window.horizonLogger) {
                 window.horizonLogger.logServerError('/api/data/country-tasks', new Error(errorDetails));
             }
@@ -116,11 +143,10 @@ async function fetchAllTasks() {
         }
 
         allTasks = await response.json();
-        console.log('All tasks loaded:', allTasks.length);
+        console.log(`✅ Loaded ${allTasks.length} tasks`);
     } catch (error) {
-        console.error('Error fetching all tasks:', error);
+        console.error('❌ Error fetching all tasks:', error);
 
-        // Log to server
         if (window.horizonLogger) {
             window.horizonLogger.logError('FETCH_TASKS_ERROR', error.message, {
                 endpoint: '/api/data/country-tasks',
@@ -130,7 +156,8 @@ async function fetchAllTasks() {
     }
 }
 
-// Render global statistics
+// ========== RENDER GLOBAL STATS ========== //
+
 function renderGlobalStats(stats) {
     const container = document.getElementById('globalStatsContainer');
     if (!container) return;
@@ -162,15 +189,15 @@ function renderGlobalStats(stats) {
         },
         {
             icon: '🔥',
-            label: 'High Priority',
+            label: 'Critical (P1)',
             value: stats.highPriorityTasks.toLocaleString(),
-            subtext: 'Priority 5 tasks'
+            subtext: 'Highest priority'
         },
         {
             icon: '⏱️',
             label: 'Avg Resolution',
             value: `${stats.avgDurationHours.toFixed(1)}h`,
-            subtext: 'Average time to resolve'
+            subtext: 'Average time'
         }
     ];
 
@@ -184,7 +211,8 @@ function renderGlobalStats(stats) {
     `).join('');
 }
 
-// Render country cards
+// ========== RENDER COUNTRY CARDS ========== //
+
 function renderCountryCards(countries) {
     const container = document.getElementById('countriesContainer');
     if (!container) return;
@@ -196,68 +224,60 @@ function renderCountryCards(countries) {
 
     container.innerHTML = countries.map(country => {
         const countryName = COUNTRY_NAMES[country.countryCode] || country.countryCode;
-        const flagCode = country.countryCode.toLowerCase();
+        const flagEmoji = COUNTRY_EMOJI_FLAGS[country.countryCode] || '🏳️';
         const closedPercentage = ((country.closedTasks / country.totalTasks) * 100).toFixed(1);
-        const incidentPercentage = ((country.incidents / country.totalTasks) * 100).toFixed(1);
-        const requestPercentage = ((country.requests / country.totalTasks) * 100).toFixed(1);
         const avgDurationHours = (country.avgDuration / 3600).toFixed(1);
 
+        // Get priority distribution (only for Incidents)
         const priorityDist = Array.from(country.priorityDistribution || []);
-        const topPriorities = priorityDist.slice(0, 3);
+        const sortedPriorities = priorityDist.sort((a, b) => {
+            const priorityA = parseInt(a.priority) || 999;
+            const priorityB = parseInt(b.priority) || 999;
+            return priorityA - priorityB; // P1 first, P5 last
+        });
 
         return `
             <div class="country-card" onclick="showCountryDetails('${country.countryCode}')">
                 <div class="country-card-header">
                     <div class="country-card-title">
-                        <img src="https://flagcdn.com/32x24/${flagCode}.png"
-                             alt="${countryName}"
-                             class="country-flag"
-                             onerror="this.style.display='none'">
+                        <span class="country-flag-emoji">${flagEmoji}</span>
                         <span class="country-name">${countryName}</span>
                     </div>
                     <div class="country-total">${country.totalTasks}</div>
                 </div>
 
+                <!-- Split: Incidents vs Requests -->
+                <div class="country-type-split">
+                    <div class="type-box incident">
+                        <div class="type-header">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Incidents</span>
+                        </div>
+                        <div class="type-count">${country.incidents}</div>
+                        <div class="type-percentage">${((country.incidents / country.totalTasks) * 100).toFixed(1)}% of total</div>
+                    </div>
+
+                    <div class="type-box request">
+                        <div class="type-header">
+                            <i class="fas fa-clipboard-check"></i>
+                            <span>Requests</span>
+                        </div>
+                        <div class="type-count">${country.requests}</div>
+                        <div class="type-percentage">${((country.requests / country.totalTasks) * 100).toFixed(1)}% of total</div>
+                    </div>
+                </div>
+
+                <!-- Additional Stats -->
                 <div class="country-stats">
                     <div class="stat-row">
                         <span class="stat-row-label">
-                            <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
-                            Incidents (INC)
-                        </span>
-                        <span class="stat-row-value">
-                            ${country.incidents}
-                            <span class="stat-row-percentage">(${incidentPercentage}%)</span>
-                        </span>
-                    </div>
-
-                    <div class="stat-row">
-                        <span class="stat-row-label">
-                            <i class="fas fa-clipboard-check" style="color: #3b82f6;"></i>
-                            Requests (SCTASK)
-                        </span>
-                        <span class="stat-row-value">
-                            ${country.requests}
-                            <span class="stat-row-percentage">(${requestPercentage}%)</span>
-                        </span>
-                    </div>
-
-                    <div class="stat-row">
-                        <span class="stat-row-label">
                             <i class="fas fa-check-circle" style="color: #22c55e;"></i>
-                            Closed Tasks
+                            Closed
                         </span>
                         <span class="stat-row-value">
                             ${country.closedTasks}
                             <span class="stat-row-percentage">(${closedPercentage}%)</span>
                         </span>
-                    </div>
-
-                    <div class="stat-row">
-                        <span class="stat-row-label">
-                            <i class="fas fa-clock" style="color: #eab308;"></i>
-                            In Progress
-                        </span>
-                        <span class="stat-row-value">${country.inProgressTasks || 0}</span>
                     </div>
 
                     <div class="stat-row">
@@ -269,30 +289,40 @@ function renderCountryCards(countries) {
                     </div>
                 </div>
 
-                ${topPriorities.length > 0 ? `
+                <!-- Priority Badges (only for Incidents - P1 = highest) -->
+                ${sortedPriorities.length > 0 ? `
                     <div class="priority-badges">
-                        ${topPriorities.map(p => {
-                            const priorityClass = p.priority === '5' ? 'p5' : p.priority === '4' ? 'p4' : p.priority === '3' ? 'p3' : 'other';
-                            return `<span class="priority-badge ${priorityClass}">P${p.priority}: ${p.count}</span>`;
+                        <span class="priority-label">Priority Distribution:</span>
+                        ${sortedPriorities.map(p => {
+                            const pNum = p.priority;
+                            const pClass = `p${pNum}`;
+                            return `<span class="priority-badge ${pClass}">P${pNum}: ${p.count}</span>`;
                         }).join('')}
                     </div>
                 ` : ''}
 
                 <button class="detail-button" onclick="event.stopPropagation(); showCountryDetails('${country.countryCode}')">
-                    <i class="fas fa-eye"></i> View Details
+                    <i class="fas fa-chart-bar"></i> View Details & Chart
                 </button>
             </div>
         `;
     }).join('');
+
+    // Apply Twemoji to render flag emojis as SVG
+    if (window.twemoji) {
+        twemoji.parse(container);
+    }
 }
 
-// Show country details modal
+// ========== SHOW COUNTRY DETAILS MODAL ========== //
+
 function showCountryDetails(countryCode) {
     const country = filteredData.countries.find(c => c.countryCode === countryCode);
     if (!country) return;
 
     const countryName = COUNTRY_NAMES[countryCode] || countryCode;
-    const flagCode = countryCode.toLowerCase();
+    const flagEmoji = COUNTRY_EMOJI_FLAGS[countryCode] || '🏳️';
+
     const countryTasks = allTasks.filter(task =>
         task.country_code && task.country_code.toUpperCase() === countryCode.toUpperCase()
     );
@@ -302,18 +332,32 @@ function showCountryDetails(countryCode) {
     const modalBody = document.getElementById('modalBody');
 
     modalTitle.innerHTML = `
-        <img src="https://flagcdn.com/32x24/${flagCode}.png"
-             alt="${countryName}"
-             style="width: 32px; height: 24px; border-radius: 4px;"
-             onerror="this.style.display='none'">
+        <span class="modal-flag">${flagEmoji}</span>
         <span>${countryName} - Task Details (${countryTasks.length} tasks)</span>
     `;
 
     const stateDist = Array.from(country.stateDistribution || []);
-    const topGroups = Array.from(country.topAssignmentGroups || []);
-    const topAssignees = Array.from(country.topAssignees || []);
+    const topGroups = Array.from(country.topAssignmentGroups || []).slice(0, 5);
+    const topAssignees = Array.from(country.topAssignees || []).slice(0, 5);
 
     modalBody.innerHTML = `
+        <!-- Monthly Chart Section -->
+        <div class="chart-section">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-chart-bar"></i>
+                Monthly Task Trend
+            </h4>
+            <div class="chart-controls">
+                <button class="chart-btn active" data-period="3m" onclick="updateChartPeriod('${countryCode}', '3m')">3 Months</button>
+                <button class="chart-btn" data-period="6m" onclick="updateChartPeriod('${countryCode}', '6m')">6 Months</button>
+                <button class="chart-btn" data-period="1y" onclick="updateChartPeriod('${countryCode}', '1y')">1 Year</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="monthlyTaskChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
             <div>
                 <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.875rem;">STATE DISTRIBUTION</h4>
@@ -346,6 +390,7 @@ function showCountryDetails(countryCode) {
             </div>
         </div>
 
+        <!-- Tasks Table -->
         <h4 style="color: var(--text-primary); margin-bottom: 1rem;">All Tasks</h4>
         <div style="overflow-x: auto;">
             <table class="task-table">
@@ -379,12 +424,20 @@ function showCountryDetails(countryCode) {
                             (task.short_description.length > 50 ? task.short_description.substring(0, 50) + '...' : task.short_description)
                             : '-';
 
+                        // Priority badge - only show for Incidents, use correct P1-P5 logic
+                        let priorityBadge = '-';
+                        if (taskType === 'incident' && task.priority) {
+                            const pNum = task.priority;
+                            const pClass = `p${pNum}`;
+                            priorityBadge = `<span class="priority-badge ${pClass}">P${pNum}</span>`;
+                        }
+
                         return `
                             <tr>
                                 <td><code style="font-size: 0.75rem;">${task.number || '-'}</code></td>
                                 <td><span class="task-type-badge ${taskType}">${taskTypeLabel}</span></td>
                                 <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${task.short_description || ''}">${shortDesc}</td>
-                                <td><span class="priority-badge ${task.priority === '5' ? 'p5' : task.priority === '4' ? 'p4' : 'other'}">${task.priority || '-'}</span></td>
+                                <td>${priorityBadge}</td>
                                 <td><span class="state-badge ${stateClass}">${task.state || '-'}</span></td>
                                 <td>${openedDate}</td>
                                 <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${task.assigned_to || '-'}</td>
@@ -399,15 +452,154 @@ function showCountryDetails(countryCode) {
     `;
 
     modal.classList.add('active');
+
+    // Apply Twemoji to modal content
+    if (window.twemoji) {
+        twemoji.parse(modal);
+    }
+
+    // Render the monthly chart (default: 3 months)
+    renderMonthlyChart(countryCode, '3m');
 }
 
-// Close task modal
-function closeTaskModal() {
-    const modal = document.getElementById('taskDetailModal');
-    modal.classList.remove('active');
+// ========== RENDER MONTHLY CHART ========== //
+
+function renderMonthlyChart(countryCode, period = '3m') {
+    const countryTasks = allTasks.filter(task =>
+        task.country_code && task.country_code.toUpperCase() === countryCode.toUpperCase()
+    );
+
+    // Determine how many months to show
+    const monthsToShow = period === '3m' ? 3 : period === '6m' ? 6 : 12;
+
+    // Get current date and calculate start date
+    const now = new Date();
+    const startDate = new Date(now);
+    startDate.setMonth(startDate.getMonth() - monthsToShow);
+
+    // Create month labels and data buckets
+    const monthLabels = [];
+    const monthData = {};
+
+    for (let i = monthsToShow - 1; i >= 0; i--) {
+        const date = new Date(now);
+        date.setMonth(date.getMonth() - i);
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        const monthLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+
+        monthLabels.push(monthLabel);
+        monthData[monthKey] = { incidents: 0, requests: 0 };
+    }
+
+    // Group tasks by month
+    countryTasks.forEach(task => {
+        if (!task.opened) return;
+
+        const openedDate = new Date(task.opened);
+        const monthKey = `${openedDate.getFullYear()}-${String(openedDate.getMonth() + 1).padStart(2, '0')}`;
+
+        if (monthData[monthKey]) {
+            const isIncident = task.number && task.number.toUpperCase().startsWith('INC');
+            if (isIncident) {
+                monthData[monthKey].incidents++;
+            } else {
+                monthData[monthKey].requests++;
+            }
+        }
+    });
+
+    // Extract data arrays
+    const incidentData = Object.values(monthData).map(m => m.incidents);
+    const requestData = Object.values(monthData).map(m => m.requests);
+
+    // Destroy previous chart if exists
+    if (currentChart) {
+        currentChart.destroy();
+    }
+
+    // Create new chart
+    const ctx = document.getElementById('monthlyTaskChart');
+    if (!ctx) return;
+
+    currentChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthLabels,
+            datasets: [
+                {
+                    label: 'Incidents (INC)',
+                    data: incidentData,
+                    backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 2
+                },
+                {
+                    label: 'Service Requests (SCTASK)',
+                    data: requestData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e5e7eb',
+                        font: { size: 12 }
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.dataset.label}: ${context.parsed.y}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: false,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#9ca3af' }
+                },
+                y: {
+                    stacked: false,
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: {
+                        color: '#9ca3af',
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
 }
 
-// Populate country filter dropdown
+// ========== UPDATE CHART PERIOD ========== //
+
+function updateChartPeriod(countryCode, period) {
+    // Update button states
+    document.querySelectorAll('.chart-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.period === period) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Re-render chart with new period
+    renderMonthlyChart(countryCode, period);
+}
+
+// ========== POPULATE FILTERS ========== //
+
 function populateCountryFilter(countries) {
     const select = document.getElementById('filterCountry');
     if (!select) return;
@@ -420,21 +612,49 @@ function populateCountryFilter(countries) {
     select.innerHTML = '<option value="all">All Countries</option>' + options;
 }
 
-// Setup filter listeners
+function populateAssignmentGroupFilter() {
+    const select = document.getElementById('filterAssignmentGroup');
+    if (!select || !allTasks || allTasks.length === 0) return;
+
+    // Extract unique assignment groups
+    const groupCounts = {};
+    allTasks.forEach(task => {
+        const group = task.assignment_group;
+        if (group && group.trim()) {
+            groupCounts[group] = (groupCounts[group] || 0) + 1;
+        }
+    });
+
+    // Sort by count descending
+    const sortedGroups = Object.entries(groupCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([group, count]) => ({ group, count }));
+
+    const options = sortedGroups.map(item =>
+        `<option value="${item.group}">${item.group} (${item.count})</option>`
+    ).join('');
+
+    select.innerHTML = '<option value="all">All Groups</option>' + options;
+}
+
+// ========== SETUP FILTER LISTENERS ========== //
+
 function setupFilterListeners() {
     const filterTaskType = document.getElementById('filterTaskType');
     const filterStatus = document.getElementById('filterStatus');
     const filterPriority = document.getElementById('filterPriority');
     const filterCountry = document.getElementById('filterCountry');
+    const filterAssignmentGroup = document.getElementById('filterAssignmentGroup');
 
-    [filterTaskType, filterStatus, filterPriority, filterCountry].forEach(filter => {
+    [filterTaskType, filterStatus, filterPriority, filterCountry, filterAssignmentGroup].forEach(filter => {
         if (filter) {
             filter.addEventListener('change', applyFilters);
         }
     });
 }
 
-// Apply filters
+// ========== APPLY FILTERS ========== //
+
 function applyFilters() {
     if (!globalData) return;
 
@@ -442,8 +662,9 @@ function applyFilters() {
     const status = document.getElementById('filterStatus')?.value || 'all';
     const priority = document.getElementById('filterPriority')?.value || 'all';
     const country = document.getElementById('filterCountry')?.value || 'all';
+    const assignmentGroup = document.getElementById('filterAssignmentGroup')?.value || 'all';
 
-    console.log('Applying filters:', { taskType, status, priority, country });
+    console.log('🔍 Applying filters:', { taskType, status, priority, country, assignmentGroup });
 
     // Filter countries
     let countries = [...globalData.countries];
@@ -476,9 +697,14 @@ function applyFilters() {
             filteredTasks = filteredTasks.filter(t => !t.state || (!t.state.toLowerCase().includes('closed') && !t.state.toLowerCase().includes('progress')));
         }
 
-        // Apply priority filter
+        // Apply priority filter (only for incidents)
         if (priority !== 'all') {
             filteredTasks = filteredTasks.filter(t => t.priority && t.priority.toString() === priority);
+        }
+
+        // Apply assignment group filter
+        if (assignmentGroup !== 'all') {
+            filteredTasks = filteredTasks.filter(t => t.assignment_group === assignmentGroup);
         }
 
         // Recalculate country stats
@@ -522,12 +748,25 @@ function applyFilters() {
     renderCountryCards(filteredCountries);
 }
 
-// Show error message
+// ========== MODAL CONTROLS ========== //
+
+function closeTaskModal() {
+    const modal = document.getElementById('taskDetailModal');
+    modal.classList.remove('active');
+
+    // Destroy chart when closing modal
+    if (currentChart) {
+        currentChart.destroy();
+        currentChart = null;
+    }
+}
+
+// ========== ERROR HANDLING ========== //
+
 function showError(message) {
     const container = document.getElementById('countriesContainer');
     if (!container) return;
 
-    // Also show in global stats container
     const statsContainer = document.getElementById('globalStatsContainer');
     if (statsContainer) {
         statsContainer.innerHTML = '';
@@ -570,6 +809,8 @@ Next steps:
     `;
 }
 
+// ========== EVENT LISTENERS ========== //
+
 // Close modal when clicking outside
 document.addEventListener('click', (e) => {
     const modal = document.getElementById('taskDetailModal');
@@ -584,3 +825,14 @@ document.addEventListener('keydown', (e) => {
         closeTaskModal();
     }
 });
+
+// ========== AUTO-INITIALIZE ========== //
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCountryTasks);
+} else {
+    initializeCountryTasks();
+}
+
+console.log('✅ Country Tasks script loaded');
