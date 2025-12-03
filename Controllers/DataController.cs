@@ -65,7 +65,8 @@ namespace Horizon.Controllers
 
             var assets = new List<Dictionary<string, object>>();
 
-            using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+            // Use FileShare.ReadWrite to allow other processes to access the file
+            using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
                 var result = reader.AsDataSet(new ExcelDataSetConfiguration()
