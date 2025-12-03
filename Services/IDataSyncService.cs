@@ -1,6 +1,10 @@
-namespace Horizon.Services;
+using System.Threading;
+using System.Threading.Tasks;
 
-public interface IDataSyncService
+namespace Horizon.Services
 {
-    Task TriggerSyncAsync(CancellationToken cancellationToken = default);
+    public interface IDataSyncService
+    {
+        Task TriggerSyncAsync(CancellationToken cancellationToken = default);
+    }
 }
