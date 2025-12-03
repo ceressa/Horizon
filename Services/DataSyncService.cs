@@ -257,7 +257,7 @@ public class DataSyncService : IHostedService, IDisposable
 
     private Timer? _timer;
 
-    private static readonly TimeSpan SyncTime = new(16, 10, 0); // 17:00 every day
+    private static readonly TimeSpan SyncTime = new(17, 0, 0); // 17:00 every day
 
     public DataSyncService(IConfiguration configuration, IWebHostEnvironment environment, ILogger<DataSyncService> logger)
     {
